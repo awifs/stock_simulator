@@ -7,108 +7,40 @@
   <style>
     /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { font-family: Arial, sans-serif; background: #f4f7f9; color: #333; }
-    /* SIDEBAR */
-    .sidebar {
-      position: fixed;
-      top: 0; left: 0;
-      width: 220px; height: 100vh;
-      background-color: #2c3e50; color: #ecf0f1;
-      padding: 20px; overflow-y: auto;
+    body { font-family: Arial, sans-serif; background: #f4f7f9; padding: 20px; }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .sidebar h2 { text-align: center; margin-bottom: 10px; font-size: 24px; letter-spacing: 2px; }
-    .sidebar p { text-align: center; margin-bottom: 30px; font-size: 16px; }
-    .sidebar ul { list-style: none; }
-    .sidebar ul li {
-      padding: 15px 20px; margin-bottom: 10px; cursor: pointer; border-radius: 3px;
+    h2 { margin-bottom: 20px; text-align: center; }
+    label { display: block; margin: 10px 0 5px; }
+    input { padding: 10px; font-size: 16px; width: 100%; margin-bottom: 10px; }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      width: 100%;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .sidebar ul li:hover, .sidebar ul li.active { background-color: #34495e; }
-    /* MAIN CONTENT */
-    .main-content { margin-left: 240px; padding: 20px; }
-    .card {
-      background: #fff; padding: 20px; margin-bottom: 20px;
-      border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    h2.section-title { margin-bottom: 15px; }
-    /* FORM STYLES */
-    form label { display: block; margin: 10px 0 5px; }
-    form input, form select {
-      padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 3px;
-    }
-    form button {
-      margin-top: 15px; padding: 10px 15px; border: none;
-      background-color: #27ae60; color: #fff; border-radius: 3px; cursor: pointer;
-    }
-    .loading { display: none; color: #007bff; margin-top: 10px; }
+    button:disabled { background: #999; }
+    .loading { display: none; color: #007bff; text-align: center; }
   </style>
-</head>
-<body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>AWIFS Mock Stock</h2>
-    <p>UID: A1</p>
-    <p>Name: Shreenand</p>
-    <ul>
-      <li class="active" onclick="showSection('dashboard')">Dashboard</li>
-      <li onclick="showSection('trade')">Trade</li>
-      <!-- Additional sections can be added here -->
-    </ul>
-  </div>
-  
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Dashboard Section (placeholder content) -->
-    <div id="dashboard" class="section" style="display: block;">
-      <div class="card">
-        <h2 class="section-title">Dashboard</h2>
-        <p>Welcome to your dashboard, Shreenand.</p>
-      </div>
-    </div>
-    
-    <!-- Trade Section -->
-    <div id="trade" class="section" style="display: none;">
-      <div class="card">
-        <h2 class="section-title">Send Trade Request</h2>
-        <form id="tradeForm" onsubmit="submitTradeRequest(event)">
-          <label for="sellerUID">Seller UID:</label>
-          <input type="text" id="sellerUID" placeholder="Enter Seller UID (e.g., A2)" required>
-          <label for="stock">Stock Symbol:</label>
-          <input type="text" id="stock" placeholder="e.g., AAPL" required>
-          <label for="quantity">Quantity:</label>
-          <input type="number" id="quantity" placeholder="Number of Shares" required>
-          <label for="price">Agreed Price:</label>
-          <input type="number" id="price" placeholder="Price per Share" required>
-          <button type="submit" id="submitBtn">Send Trade Request</button>
-          <div class="loading" id="loadingIndicator">Loading...</div>
-        </form>
-        <div class="card">
-          <h2 class="section-title">Registered Trade Requests</h2>
-          <div id="requestsDisplay">
-            <!-- Registered trade requests will be loaded here (optional) -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
   <script>
-    // Section switching function
-    function showSection(section) {
-      document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-      document.getElementById(section).style.display = 'block';
-      if (section === 'trade') {
-        loadRegisteredRequests();
-      }
-    }
-    
-    // Set your deployed Apps Script Web App URL here
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKhnlv7CA6-_nkO6uaH8huEge-Eog1t9CCPLjt3ZQdGgTynOPPVXFy6FxkNzhrzCZj6Q/exec";
-    
-    // Function to submit a trade request from Shreenand's portal
-    async function submitTradeRequest(event) {
+    // Set your deployed Apps Script Web App URL here:
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlZJSe8E8k19AX7w4I2vcTkAqj4oVCF1vKEyrimQFUpOe67a3k66H_9SUX8jEob6P-mQ/exec";
+
+    // Function to submit a trade request
+    async function submitTrade(event) {
       event.preventDefault();
+      const loadingIndicator = document.getElementById("loading");
       const submitBtn = document.getElementById("submitBtn");
-      const loadingIndicator = document.getElementById("loadingIndicator");
       
       // Show loading indicator and disable button
       loadingIndicator.style.display = "block";
@@ -116,7 +48,7 @@
       
       const tradeData = {
         action: "submitTradeRequest",
-        buyerUID: "A1",         // Shreenand's UID as buyer
+        buyerUID: "A1",         // Shreenand's UID
         buyerName: "Shreenand",
         sellerUID: document.getElementById("sellerUID").value.trim(),
         stock: document.getElementById("stock").value.trim(),
@@ -133,7 +65,6 @@
         const result = await response.json();
         alert(result.message);
         document.getElementById("tradeForm").reset();
-        loadRegisteredRequests(); // Refresh display (if implemented)
       } catch (error) {
         console.error("Error submitting trade request:", error);
         alert("Error submitting trade request. Please try again.");
@@ -142,40 +73,23 @@
         submitBtn.disabled = false;
       }
     }
-    
-    // Function to load and display registered trade requests for Shreenand (if any)
-    async function loadRegisteredRequests() {
-      // For demonstration, we load all requests where buyerUID is "A1"
-      try {
-        const response = await fetch(SCRIPT_URL + '?action=getTradeRequests&sellerUID=' + encodeURIComponent("A1"));
-        const data = await response.json();
-        let html = "";
-        if (data.success && data.tradeRequests && data.tradeRequests.length > 0) {
-          html += "<table><thead><tr><th>Buyer UID</th><th>Buyer Name</th><th>Seller UID</th><th>Stock</th><th>Quantity</th><th>Price</th><th>Time</th></tr></thead><tbody>";
-          data.tradeRequests.forEach(req => {
-            html += `<tr>
-                        <td>${req.buyerUID}</td>
-                        <td>${req.buyerName}</td>
-                        <td>${req.sellerUID}</td>
-                        <td>${req.stock}</td>
-                        <td>${req.quantity}</td>
-                        <td>$${req.price}</td>
-                        <td>${new Date(req.timestamp).toLocaleString()}</td>
-                      </tr>`;
-          });
-          html += "</tbody></table>";
-        } else {
-          html = "No registered trade requests.";
-        }
-        document.getElementById("requestsDisplay").innerHTML = html;
-      } catch (error) {
-        console.error("Error loading registered requests:", error);
-        document.getElementById("requestsDisplay").innerHTML = "Error loading requests.";
-      }
-    }
-    
-    // Optionally, load registered requests on page load:
-    // window.onload = loadRegisteredRequests;
   </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Shreenand's Trade Request Portal</h2>
+    <form id="tradeForm" onsubmit="submitTrade(event)">
+      <label for="sellerUID">Seller UID:</label>
+      <input type="text" id="sellerUID" placeholder="Enter Seller UID (e.g., A2)" required>
+      <label for="stock">Stock Symbol:</label>
+      <input type="text" id="stock" placeholder="Enter Stock Symbol (e.g., AAPL)" required>
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" placeholder="Enter Quantity" required>
+      <label for="price">Price per Share:</label>
+      <input type="number" id="price" placeholder="Enter Price per Share" required>
+      <button type="submit" id="submitBtn">Submit Trade Request</button>
+      <div id="loading" class="loading">Loading...</div>
+    </form>
+  </div>
 </body>
 </html>
