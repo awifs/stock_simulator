@@ -7,82 +7,39 @@
   <style>
     /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { font-family: 'Arial', sans-serif; background: #f4f7f9; color: #333; }
-    
+    body, html { font-family: Arial, sans-serif; background: #f4f7f9; color: #333; }
     /* SIDEBAR */
     .sidebar {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 220px;
-      height: 100vh;
-      background-color: #2c3e50;
-      color: #ecf0f1;
-      padding: 20px;
-      overflow-y: auto;
+      top: 0; left: 0;
+      width: 220px; height: 100vh;
+      background-color: #2c3e50; color: #ecf0f1;
+      padding: 20px; overflow-y: auto;
     }
-    .sidebar h2 {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 24px;
-      letter-spacing: 2px;
-    }
-    .sidebar p {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 16px;
-    }
-    .sidebar ul {
-      list-style: none;
-    }
+    .sidebar h2 { text-align: center; margin-bottom: 10px; font-size: 24px; letter-spacing: 2px; }
+    .sidebar p { text-align: center; margin-bottom: 30px; font-size: 16px; }
+    .sidebar ul { list-style: none; }
     .sidebar ul li {
-      padding: 15px 20px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      border-radius: 3px;
+      padding: 15px 20px; margin-bottom: 10px; cursor: pointer; border-radius: 3px;
     }
-    .sidebar ul li:hover, .sidebar ul li.active {
-      background-color: #34495e;
-    }
-    
+    .sidebar ul li:hover, .sidebar ul li.active { background-color: #34495e; }
     /* MAIN CONTENT */
-    .main-content {
-      margin-left: 240px;
-      padding: 20px;
-    }
+    .main-content { margin-left: 240px; padding: 20px; }
     .card {
-      background: #fff;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: #fff; padding: 20px; margin-bottom: 20px;
+      border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    h2.section-title {
-      margin-bottom: 15px;
-    }
-    
+    h2.section-title { margin-bottom: 15px; }
     /* FORM STYLES */
     form label { display: block; margin: 10px 0 5px; }
     form input, form select {
-      padding: 8px;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 3px;
+      padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 3px;
     }
     form button {
-      margin-top: 15px;
-      padding: 10px 15px;
-      border: none;
-      background-color: #27ae60;
-      color: #fff;
-      border-radius: 3px;
-      cursor: pointer;
+      margin-top: 15px; padding: 10px 15px; border: none;
+      background-color: #27ae60; color: #fff; border-radius: 3px; cursor: pointer;
     }
-    .loading {
-      display: none;
-      color: #007bff;
-      margin-top: 10px;
-    }
+    .loading { display: none; color: #007bff; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -94,21 +51,21 @@
     <ul>
       <li class="active" onclick="showSection('dashboard')">Dashboard</li>
       <li onclick="showSection('trade')">Trade</li>
-      <!-- Other menu items (Portfolio, News, Leaderboard) can be added here -->
+      <!-- Additional sections can be added here -->
     </ul>
   </div>
   
   <!-- Main Content -->
   <div class="main-content">
-    <!-- Dashboard Section (dummy content for now) -->
+    <!-- Dashboard Section (placeholder content) -->
     <div id="dashboard" class="section" style="display: block;">
       <div class="card">
         <h2 class="section-title">Dashboard</h2>
-        <p>This is the dashboard. (Dummy stock data and transactions can be shown here.)</p>
+        <p>Welcome to your dashboard, Shreenand.</p>
       </div>
     </div>
     
-    <!-- Trade Section: Shreenand (A1) can send a trade request -->
+    <!-- Trade Section -->
     <div id="trade" class="section" style="display: none;">
       <div class="card">
         <h2 class="section-title">Send Trade Request</h2>
@@ -124,41 +81,42 @@
           <button type="submit" id="submitBtn">Send Trade Request</button>
           <div class="loading" id="loadingIndicator">Loading...</div>
         </form>
-      </div>
-      <!-- For now we focus only on registering the request in the sheet -->
-      <div class="card">
-        <h2 class="section-title">Registered Trade Requests</h2>
-        <div id="requestsDisplay">
-          <!-- We will load and display the trade requests for Shreenand (if needed) -->
+        <div class="card">
+          <h2 class="section-title">Registered Trade Requests</h2>
+          <div id="requestsDisplay">
+            <!-- Registered trade requests will be loaded here (optional) -->
+          </div>
         </div>
       </div>
     </div>
   </div>
   
   <script>
-    // Function to switch between sections
+    // Section switching function
     function showSection(section) {
       document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
       document.getElementById(section).style.display = 'block';
-      // Optionally, add code here to load data when switching sections.
+      if (section === 'trade') {
+        loadRegisteredRequests();
+      }
     }
     
-    // Set your deployed Apps Script Web App URL:
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBeErQY0jTmugWgVH4Gy4KtsdPNyoaHw5cm_uBKf3OOWUD_h7kpUHYxXcM4I2AWzyHbA/exec";
+    // Set your deployed Apps Script Web App URL here
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKhnlv7CA6-_nkO6uaH8huEge-Eog1t9CCPLjt3ZQdGgTynOPPVXFy6FxkNzhrzCZj6Q/exec";
     
-    // Function to submit a trade request from Shreenand's portal.
+    // Function to submit a trade request from Shreenand's portal
     async function submitTradeRequest(event) {
       event.preventDefault();
       const submitBtn = document.getElementById("submitBtn");
       const loadingIndicator = document.getElementById("loadingIndicator");
       
-      // Show loading indicator and disable the button
+      // Show loading indicator and disable button
       loadingIndicator.style.display = "block";
       submitBtn.disabled = true;
       
       const tradeData = {
         action: "submitTradeRequest",
-        buyerUID: "A1",         // Shreenand's UID (as buyer)
+        buyerUID: "A1",         // Shreenand's UID as buyer
         buyerName: "Shreenand",
         sellerUID: document.getElementById("sellerUID").value.trim(),
         stock: document.getElementById("stock").value.trim(),
@@ -175,8 +133,7 @@
         const result = await response.json();
         alert(result.message);
         document.getElementById("tradeForm").reset();
-        // Optionally, call a function to display the registered requests
-        loadRegisteredRequests();
+        loadRegisteredRequests(); // Refresh display (if implemented)
       } catch (error) {
         console.error("Error submitting trade request:", error);
         alert("Error submitting trade request. Please try again.");
@@ -186,10 +143,9 @@
       }
     }
     
-    // Function to load and display registered trade requests for Shreenand.
+    // Function to load and display registered trade requests for Shreenand (if any)
     async function loadRegisteredRequests() {
-      // For demonstration, we retrieve all requests where buyerUID is "A1"
-      // You can adjust this function to load as needed.
+      // For demonstration, we load all requests where buyerUID is "A1"
       try {
         const response = await fetch(SCRIPT_URL + '?action=getTradeRequests&sellerUID=' + encodeURIComponent("A1"));
         const data = await response.json();
@@ -198,14 +154,14 @@
           html += "<table><thead><tr><th>Buyer UID</th><th>Buyer Name</th><th>Seller UID</th><th>Stock</th><th>Quantity</th><th>Price</th><th>Time</th></tr></thead><tbody>";
           data.tradeRequests.forEach(req => {
             html += `<tr>
-                      <td>${req.buyerUID}</td>
-                      <td>${req.buyerName}</td>
-                      <td>${req.sellerUID}</td>
-                      <td>${req.stock}</td>
-                      <td>${req.quantity}</td>
-                      <td>$${req.price}</td>
-                      <td>${new Date(req.timestamp).toLocaleString()}</td>
-                     </tr>`;
+                        <td>${req.buyerUID}</td>
+                        <td>${req.buyerName}</td>
+                        <td>${req.sellerUID}</td>
+                        <td>${req.stock}</td>
+                        <td>${req.quantity}</td>
+                        <td>$${req.price}</td>
+                        <td>${new Date(req.timestamp).toLocaleString()}</td>
+                      </tr>`;
           });
           html += "</tbody></table>";
         } else {
@@ -218,7 +174,7 @@
       }
     }
     
-    // Optionally, you can load registered requests on page load for Shreenand:
+    // Optionally, load registered requests on page load:
     // window.onload = loadRegisteredRequests;
   </script>
 </body>
