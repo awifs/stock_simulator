@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AWIFS - Shreenand's Portal</title>
   <style>
-    /* Use the same CSS as before */
+    /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body, html { font-family: 'Arial', sans-serif; background: #f4f7f9; color: #333; }
+    /* SIDEBAR */
     .sidebar {
       position: fixed; top: 0; left: 0; width: 220px; height: 100vh;
       background-color: #2c3e50; color: #ecf0f1; padding: 20px; overflow-y: auto;
@@ -19,20 +20,23 @@
       padding: 15px 20px; margin-bottom: 10px; cursor: pointer; border-radius: 3px;
     }
     .sidebar ul li:hover, .sidebar ul li.active { background-color: #34495e; }
+    /* MAIN CONTENT */
     .main-content { margin-left: 240px; padding: 20px; }
     .card {
-      background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: #fff; padding: 20px; margin-bottom: 20px;
+      border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     h2.section-title { margin-bottom: 15px; }
+    /* TABLE STYLES */
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { padding: 10px; border: 1px solid #bdc3c7; text-align: left; }
     th { background: #ecf0f1; }
+    /* FORM STYLES */
     form label { display: block; margin: 10px 0 5px; }
     form input, form select { padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 3px; }
     form button {
-      margin-top: 15px; padding: 10px 15px;
-      border: none; background-color: #27ae60; color: #fff; border-radius: 3px; cursor: pointer;
+      margin-top: 15px; padding: 10px 15px; border: none;
+      background-color: #27ae60; color: #fff; border-radius: 3px; cursor: pointer;
     }
     .loading { display: none; color: #007bff; margin-top: 10px; }
   </style>
@@ -95,6 +99,7 @@
     <div id="trade" class="section" style="display: none;">
       <div class="card">
         <h2 class="section-title">Send Trade Request</h2>
+        <!-- Shreenand sends a trade request as buyer -->
         <form id="tradeForm" onsubmit="submitTradeRequest(event)">
           <label for="sellerUID">Seller UID:</label>
           <input type="text" id="sellerUID" placeholder="Enter Seller UID (e.g., A2)" required>
@@ -110,6 +115,7 @@
       </div>
       <div class="card">
         <h2 class="section-title">Pending Trade Requests (For You as Seller)</h2>
+        <!-- This table displays trade requests where Shreenand (A1) is the seller -->
         <table id="tradeRequestsTable">
           <thead>
             <tr>
@@ -128,7 +134,7 @@
       </div>
     </div>
     
-    <!-- Other sections (Portfolio, News, Leaderboard) can be added similarly -->
+    <!-- Additional sections (Portfolio, News, Leaderboard) can be added similarly -->
   </div>
   
   <script>
@@ -141,8 +147,8 @@
       }
     }
     
-    // Replace with your deployed Apps Script Web App URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxK0syGUi91Y9vug6QFcL_Gf-d2UcWxOXsYxhZ8ikLdxusmXcw_ByasZZCBnIhoDMgZcA/exec";
+    // Set your deployed Apps Script Web App URL here:
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwGWSzkIMxyFGW6yxRpqHCg2n_pEG9MgN0eHaeud3xdIjrqPPAFdMDCXfppkv9U_8TwNw/exec";
     
     // Function to submit a trade request from Shreenand's portal (as buyer)
     async function submitTradeRequest(event) {
@@ -183,9 +189,9 @@
       }
     }
     
-    // Function to load pending trade requests where sellerUID equals Shreenand's UID ("A1")
+    // Function to load pending trade requests for Shreenand (seller UID "A1")
     async function loadTradeRequests() {
-      const sellerUID = "A1"; // For Shreenand's portal as seller
+      const sellerUID = "A1"; // Shreenand's UID as seller
       try {
         const response = await fetch(SCRIPT_URL + '?action=getTradeRequests&sellerUID=' + encodeURIComponent(sellerUID));
         const data = await response.json();
@@ -210,7 +216,7 @@
       }
     }
     
-    // Optionally load trade requests automatically when Trade section is shown
+    // Optionally, you can load trade requests on page load:
     // window.onload = loadTradeRequests;
   </script>
 </body>
