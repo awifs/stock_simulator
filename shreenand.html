@@ -34,7 +34,7 @@
   </style>
   <script>
     // Set your deployed Apps Script Web App URL here:
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxa-16YhuT1hDSwqE9zZ1jz6L06iFpyKd6lQQpy-xEieuoGvxOhCo_3ic1u5OBWmCTE4g/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8-VIi0nx_jYrKB-SugGeoQbo_HgP71PeFq5UGZeD88KlofYyb7P31pgrD8MCbFLLDUw/exec";
 
     // Function to submit a trade request
     async function submitTrade(event) {
@@ -52,8 +52,8 @@
         buyerName: "Shreenand",
         sellerUID: document.getElementById("sellerUID").value.trim(),
         stock: document.getElementById("stock").value.trim(),
-        quantity: document.getElementById("quantity").value,
-        price: document.getElementById("price").value
+        quantity: Number(document.getElementById("quantity").value),
+        price: Number(document.getElementById("price").value)
       };
       
       try {
@@ -87,9 +87,9 @@
       <label for="stock">Stock Symbol:</label>
       <input type="text" id="stock" placeholder="Enter Stock Symbol (e.g., AAPL)" required>
       <label for="quantity">Quantity:</label>
-      <input type="number" id="quantity" placeholder="Enter Quantity" required>
+      <input type="number" id="quantity" placeholder="Enter Quantity" min="1" required>
       <label for="price">Price per Share:</label>
-      <input type="number" id="price" placeholder="Enter Price per Share" required>
+      <input type="number" id="price" placeholder="Enter Price per Share" step="0.01" min="0.01" required>
       <button type="submit" id="submitBtn">Submit Trade Request</button>
       <div id="loadingIndicator" class="loading">Loading...</div>
     </form>
