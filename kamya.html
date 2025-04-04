@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AWIFS - Mock Stock Competition</title>
+  <title>AWIFS - Kamya's Portal</title>
   <style>
     /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body, html { font-family: 'Arial', sans-serif; background: #f4f7f9; color: #333; }
-    
     /* SIDEBAR */
     .sidebar {
       position: fixed;
@@ -21,57 +20,35 @@
       padding: 20px;
       overflow-y: auto;
     }
-    .sidebar h2 {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 24px;
-      letter-spacing: 2px;
-    }
-    .sidebar p {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 16px;
-    }
-    .sidebar ul {
-      list-style: none;
-    }
+    .sidebar h2 { text-align: center; margin-bottom: 10px; font-size: 24px; letter-spacing: 2px; }
+    .sidebar p { text-align: center; margin-bottom: 30px; font-size: 16px; }
+    .sidebar ul { list-style: none; }
     .sidebar ul li {
       padding: 15px 20px;
       margin-bottom: 10px;
       cursor: pointer;
       border-radius: 3px;
     }
-    .sidebar ul li:hover, .sidebar ul li.active {
-      background-color: #34495e;
-    }
-    
+    .sidebar ul li:hover, .sidebar ul li.active { background-color: #34495e; }
     /* MAIN CONTENT */
-    .main-content {
-      margin-left: 240px;
-      padding: 20px;
-    }
+    .main-content { margin-left: 240px; padding: 20px; }
     .card {
-      background: #fff;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: #fff; padding: 20px; margin-bottom: 20px;
+      border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     h2.section-title { margin-bottom: 15px; }
-    
     /* TABLE STYLES */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { padding: 10px; border: 1px solid #bdc3c7; text-align: left; }
     th { background: #ecf0f1; }
-    
     /* FORM STYLES */
     form label { display: block; margin: 10px 0 5px; }
     form input, form select { padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 3px; }
-    form button { margin-top: 15px; padding: 10px 15px; border: none; background-color: #27ae60; color: #fff; border-radius: 3px; cursor: pointer; }
+    form button {
+      margin-top: 15px; padding: 10px 15px;
+      border: none; background-color: #27ae60; color: #fff; border-radius: 3px; cursor: pointer;
+    }
+    .loading { display: none; color: #007bff; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -104,20 +81,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>THC</td>
-              <td>$100</td>
-              <td>+1%</td>
-            </tr>
-            <tr>
-              <td>Fuel Zone</td>
-              <td>$200</td>
-              <td>-0.5%</td>
-            </tr>
+            <tr><td>THC</td><td>$100</td><td>+1%</td></tr>
+            <tr><td>Fuel Zone</td><td>$200</td><td>-0.5%</td></tr>
           </tbody>
         </table>
       </div>
-      
       <div class="card">
         <h2 class="section-title">Recent Transactions</h2>
         <table>
@@ -131,13 +99,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>12:01</td>
-              <td>THC</td>
-              <td>Buy</td>
-              <td>10</td>
-              <td>$100</td>
-            </tr>
+            <tr><td>12:01</td><td>THC</td><td>Buy</td><td>10</td><td>$100</td></tr>
           </tbody>
         </table>
       </div>
@@ -146,23 +108,24 @@
     <!-- Trade Section -->
     <div id="trade" class="section" style="display: none;">
       <div class="card">
-        <h2 class="section-title">Trade Request</h2>
-        <!-- Buyer (Kamya) sends a trade request -->
+        <h2 class="section-title">Send Trade Request</h2>
+        <!-- Kamya sends a trade request as buyer -->
         <form id="tradeForm" onsubmit="submitTradeRequest(event)">
           <label for="sellerUID">Seller UID:</label>
-          <input type="text" id="sellerUID" placeholder="Enter Seller UID" required>
+          <input type="text" id="sellerUID" placeholder="Enter Seller UID (e.g., A1)" required>
           <label for="stock">Stock Symbol:</label>
           <input type="text" id="stock" placeholder="e.g., AAPL" required>
           <label for="quantity">Quantity:</label>
           <input type="number" id="quantity" placeholder="Number of Shares" required>
           <label for="price">Agreed Price:</label>
           <input type="number" id="price" placeholder="Price per Share" required>
-          <button type="submit">Send Trade Request</button>
+          <button type="submit" id="submitBtn">Send Trade Request</button>
+          <div class="loading" id="loadingIndicator">Loading...</div>
         </form>
       </div>
       <div class="card">
-        <h2 class="section-title">Pending Trade Requests</h2>
-        <!-- This table displays trade requests for which Kamya is the seller (if any) -->
+        <h2 class="section-title">Pending Trade Requests (For You as Seller)</h2>
+        <!-- This table displays trade requests where Kamya (A2) is the seller -->
         <table id="tradeRequestsTable">
           <thead>
             <tr>
@@ -174,12 +137,14 @@
               <th>Time</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody id="requestsTbody">
+            <tr><td colspan="6">No trade requests loaded.</td></tr>
+          </tbody>
         </table>
       </div>
     </div>
     
-    <!-- Other sections (Portfolio, News, Leaderboard) would be added similarly -->
+    <!-- Other sections like Portfolio, News, Leaderboard can be added similarly -->
   </div>
   
   <script>
@@ -187,17 +152,27 @@
     function showSection(section) {
       document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
       document.getElementById(section).style.display = 'block';
+      if (section === 'trade') {
+        loadTradeRequests();
+      }
     }
     
     // Replace with your deployed Apps Script Web App URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEiHHzllx1fUgY3y8AevxzqcQP1xL3RnmBKKYoBgmMZvNQ-ZRXBXG4m15Ko6n4YRjy_A/exec";
+    const SCRIPT_URL = "YOUR_SCRIPT_URL_HERE";
     
-    // Function to submit a trade request (from buyer side)
+    // Function to submit a trade request from Kamya's portal (as buyer)
     async function submitTradeRequest(event) {
       event.preventDefault();
+      const submitBtn = document.getElementById("submitBtn");
+      const loadingIndicator = document.getElementById("loadingIndicator");
+      
+      // Show loading indicator and disable button
+      loadingIndicator.style.display = "block";
+      submitBtn.disabled = true;
+      
       const tradeData = {
         action: "submitTradeRequest",
-        buyerUID: "A2",         // Kamya's UID (since this is her portal)
+        buyerUID: "A2",        // Kamya's UID (as buyer)
         buyerName: "Kamya",
         sellerUID: document.getElementById("sellerUID").value.trim(),
         stock: document.getElementById("stock").value.trim(),
@@ -207,26 +182,34 @@
       
       try {
         const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(tradeData)
         });
         const result = await response.json();
         alert(result.message);
-        loadTradeRequests(); // Refresh pending requests
+        // Clear form fields after successful submission (optional)
+        document.getElementById("tradeForm").reset();
+        // Refresh the pending requests table
+        loadTradeRequests();
       } catch (error) {
         console.error("Error submitting trade request:", error);
+        alert("Error submitting trade request. Please try again.");
+      } finally {
+        // Hide loading indicator and re-enable button
+        loadingIndicator.style.display = "none";
+        submitBtn.disabled = false;
       }
     }
     
-    // Function to load pending trade requests for the logged-in user as seller
+    // Function to load pending trade requests where sellerUID equals Kamya's UID ("A2")
     async function loadTradeRequests() {
-      // For this demo, assume Kamya (UID A2) is acting as seller when she views this section.
+      const sellerUID = "A2"; // Kamya's UID as seller
       try {
-        const response = await fetch(SCRIPT_URL + '?action=getTradeRequests&sellerUID=A2');
+        const response = await fetch(SCRIPT_URL + '?action=getTradeRequests&sellerUID=' + encodeURIComponent(sellerUID));
         const data = await response.json();
-        const tbody = document.querySelector('#tradeRequestsTable tbody');
-        tbody.innerHTML = '';
+        const tbody = document.getElementById("requestsTbody");
+        tbody.innerHTML = "";
         if (data.success && data.tradeRequests && data.tradeRequests.length > 0) {
           data.tradeRequests.forEach(req => {
             tbody.innerHTML += `<tr>
@@ -239,17 +222,15 @@
             </tr>`;
           });
         } else {
-          tbody.innerHTML = '<tr><td colspan="6">No pending trade requests.</td></tr>';
+          tbody.innerHTML = `<tr><td colspan="6">No pending trade requests.</td></tr>`;
         }
       } catch (error) {
-        console.error('Error loading trade requests:', error);
+        console.error("Error loading trade requests:", error);
       }
     }
     
-    // Load pending trade requests on page load (for demonstration)
-    loadTradeRequests();
+    // Optionally, you can load trade requests automatically on page load:
+    // window.onload = loadTradeRequests;
   </script>
-  
-  <!-- Optionally include Chart.js or other libraries for performance charts -->
 </body>
 </html>
