@@ -30,16 +30,16 @@
       cursor: pointer;
     }
     button:disabled { background: #999; }
-    .loading { display: none; color: #007bff; text-align: center; }
+    .loading { display: none; color: #007bff; text-align: center; margin-top: 10px; }
   </style>
   <script>
     // Set your deployed Apps Script Web App URL here:
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlZJSe8E8k19AX7w4I2vcTkAqj4oVCF1vKEyrimQFUpOe67a3k66H_9SUX8jEob6P-mQ/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxa-16YhuT1hDSwqE9zZ1jz6L06iFpyKd6lQQpy-xEieuoGvxOhCo_3ic1u5OBWmCTE4g/exec";
 
     // Function to submit a trade request
     async function submitTrade(event) {
       event.preventDefault();
-      const loadingIndicator = document.getElementById("loading");
+      const loadingIndicator = document.getElementById("loadingIndicator");
       const submitBtn = document.getElementById("submitBtn");
       
       // Show loading indicator and disable button
@@ -62,7 +62,10 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(tradeData)
         });
-        const result = await response.json();
+        console.log("Response status:", response.status);
+        const text = await response.text();
+        console.log("Response text:", text);
+        const result = JSON.parse(text);
         alert(result.message);
         document.getElementById("tradeForm").reset();
       } catch (error) {
@@ -88,7 +91,7 @@
       <label for="price">Price per Share:</label>
       <input type="number" id="price" placeholder="Enter Price per Share" required>
       <button type="submit" id="submitBtn">Submit Trade Request</button>
-      <div id="loading" class="loading">Loading...</div>
+      <div id="loadingIndicator" class="loading">Loading...</div>
     </form>
   </div>
 </body>
