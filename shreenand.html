@@ -1,43 +1,66 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Shreenand's Number Entry Portal</title>
+  <title>Stock Market Simulator Trade Request</title>
 </head>
 <body>
-  <h1>Number Entry Portal</h1>
-  <form id="numberForm">
-    <label for="numberInput">Enter a number:</label>
-    <input type="number" id="numberInput" required>
-    <button type="submit">Submit</button>
+  <h1>Submit a Trade Request</h1>
+  <form id="tradeForm">
+    <label for="buyerUID">Buyer UID:</label>
+    <input type="text" id="buyerUID" name="buyerUID" required><br><br>
+
+    <label for="buyerName">Buyer Name:</label>
+    <input type="text" id="buyerName" name="buyerName" required><br><br>
+
+    <label for="sellerUID">Seller UID:</label>
+    <input type="text" id="sellerUID" name="sellerUID" required><br><br>
+
+    <label for="stock">Stock:</label>
+    <input type="text" id="stock" name="stock" required><br><br>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" required><br><br>
+
+    <label for="price">Price:</label>
+    <input type="number" step="0.01" id="price" name="price" required><br><br>
+
+    <button type="submit">Submit Trade Request</button>
   </form>
-  <div id="result"></div>
+
+  <p id="statusMessage"></p>
 
   <script>
-    // Replace with your deployed Google Apps Script Web App URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyseMPFjSD0W7skf2tKZNKkSn4XZR8hueA295fO2tqtstFxzfhP7ohzbqlY4wZ3c0n1/exec';
+    const form = document.getElementById('tradeForm');
+    const statusMessage = document.getElementById('statusMessage');
 
-    document.getElementById('numberForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const numberValue = document.getElementById('numberInput').value;
-      
-      // Prepare the data object to send
-      const data = {
-        action: 'submitNumber',
-        number: Number(numberValue)
-      };
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent the default form submission
 
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(data)
-        });
-        const result = await response.json();
-        document.getElementById('result').innerText = result.message;
-      } catch(err) {
-        document.getElementById('result').innerText = 'Error: ' + err;
-      }
+      // Collect the form data
+      const formData = new URLSearchParams(new FormData(form));
+
+      // Replace with your deployed Google Apps Script web app URL
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbymfrVtPPXy0P2d079wjjdF8HlP1YWa4LWsPuxEqgR9Gly1rc5ES00Wmac_0MH0XRPx_g/exec';
+
+      // Send the POST request
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors', // Using no-cors because the web app may not have CORS enabled
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+      })
+      .then(() => {
+        statusMessage.textContent = 'Trade request submitted successfully!';
+        form.reset();
+      })
+      .catch((error) => {
+        console.error('Error!', error.message);
+        statusMessage.textContent = 'Submission failed. Please try again.';
+      });
     });
   </script>
 </body>
