@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +7,13 @@
 <body>
   <h1>Submit a Trade Request</h1>
   <form id="tradeForm">
-    <label for="buyerUID">Buyer UID:</label>
-    <input type="text" id="buyerUID" name="buyerUID" required><br><br>
+    <!-- Hidden Buyer Info (automatically filled) -->
+    <input type="hidden" id="buyerUID" name="buyerUID" value="A12">
+    <input type="hidden" id="buyerName" name="buyerName" value="Shreenand">
 
-    <label for="buyerName">Buyer Name:</label>
-    <input type="text" id="buyerName" name="buyerName" required><br><br>
+    <p><strong>Logged in as:</strong> A12 - Shreenand</p>
 
+    <!-- Only seller input and trade details -->
     <label for="sellerUID">Seller UID:</label>
     <input type="text" id="sellerUID" name="sellerUID" required><br><br>
 
@@ -42,12 +42,11 @@
       const formData = new URLSearchParams(new FormData(form));
 
       // Replace with your deployed Google Apps Script web app URL
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbymfrVtPPXy0P2d079wjjdF8HlP1YWa4LWsPuxEqgR9Gly1rc5ES00Wmac_0MH0XRPx_g/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyw3cy_aNIbQz68RxjKbIYZxHk7nv0ipVYfrH9ZMHoiqNdcEx0UAaJYV27PRSJWOzFD/exec';
 
-      // Send the POST request
       fetch(scriptURL, {
         method: 'POST',
-        mode: 'no-cors', // Using no-cors because the web app may not have CORS enabled
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
