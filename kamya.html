@@ -5,43 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AWIFS - Kamya's Portal</title>
   <style>
-    /* RESET */
+    /* Same CSS as before */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body, html { font-family: 'Arial', sans-serif; background: #f4f7f9; color: #333; }
-    /* SIDEBAR */
     .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 220px;
-      height: 100vh;
-      background-color: #2c3e50;
-      color: #ecf0f1;
-      padding: 20px;
-      overflow-y: auto;
+      position: fixed; top: 0; left: 0; width: 220px; height: 100vh;
+      background-color: #2c3e50; color: #ecf0f1; padding: 20px; overflow-y: auto;
     }
     .sidebar h2 { text-align: center; margin-bottom: 10px; font-size: 24px; letter-spacing: 2px; }
     .sidebar p { text-align: center; margin-bottom: 30px; font-size: 16px; }
     .sidebar ul { list-style: none; }
     .sidebar ul li {
-      padding: 15px 20px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      border-radius: 3px;
+      padding: 15px 20px; margin-bottom: 10px; cursor: pointer; border-radius: 3px;
     }
     .sidebar ul li:hover, .sidebar ul li.active { background-color: #34495e; }
-    /* MAIN CONTENT */
     .main-content { margin-left: 240px; padding: 20px; }
     .card {
       background: #fff; padding: 20px; margin-bottom: 20px;
       border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     h2.section-title { margin-bottom: 15px; }
-    /* TABLE STYLES */
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { padding: 10px; border: 1px solid #bdc3c7; text-align: left; }
     th { background: #ecf0f1; }
-    /* FORM STYLES */
     form label { display: block; margin: 10px 0 5px; }
     form input, form select { padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 3px; }
     form button {
@@ -109,7 +95,6 @@
     <div id="trade" class="section" style="display: none;">
       <div class="card">
         <h2 class="section-title">Send Trade Request</h2>
-        <!-- Kamya sends a trade request as buyer -->
         <form id="tradeForm" onsubmit="submitTradeRequest(event)">
           <label for="sellerUID">Seller UID:</label>
           <input type="text" id="sellerUID" placeholder="Enter Seller UID (e.g., A1)" required>
@@ -125,7 +110,6 @@
       </div>
       <div class="card">
         <h2 class="section-title">Pending Trade Requests (For You as Seller)</h2>
-        <!-- This table displays trade requests where Kamya (A2) is the seller -->
         <table id="tradeRequestsTable">
           <thead>
             <tr>
@@ -144,7 +128,7 @@
       </div>
     </div>
     
-    <!-- Other sections like Portfolio, News, Leaderboard can be added similarly -->
+    <!-- Additional sections (Portfolio, News, Leaderboard) can be added similarly -->
   </div>
   
   <script>
@@ -157,8 +141,8 @@
       }
     }
     
-    // Replace with your deployed Apps Script Web App URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxK0syGUi91Y9vug6QFcL_Gf-d2UcWxOXsYxhZ8ikLdxusmXcw_ByasZZCBnIhoDMgZcA/exec";
+    // Set your deployed Apps Script Web App URL:
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwGWSzkIMxyFGW6yxRpqHCg2n_pEG9MgN0eHaeud3xdIjrqPPAFdMDCXfppkv9U_8TwNw/exec";
     
     // Function to submit a trade request from Kamya's portal (as buyer)
     async function submitTradeRequest(event) {
@@ -172,7 +156,7 @@
       
       const tradeData = {
         action: "submitTradeRequest",
-        buyerUID: "A2",        // Kamya's UID (as buyer)
+        buyerUID: "A2",         // Kamya's UID (as buyer)
         buyerName: "Kamya",
         sellerUID: document.getElementById("sellerUID").value.trim(),
         stock: document.getElementById("stock").value.trim(),
@@ -188,15 +172,12 @@
         });
         const result = await response.json();
         alert(result.message);
-        // Clear form fields after successful submission (optional)
         document.getElementById("tradeForm").reset();
-        // Refresh the pending requests table
         loadTradeRequests();
       } catch (error) {
         console.error("Error submitting trade request:", error);
         alert("Error submitting trade request. Please try again.");
       } finally {
-        // Hide loading indicator and re-enable button
         loadingIndicator.style.display = "none";
         submitBtn.disabled = false;
       }
@@ -229,7 +210,7 @@
       }
     }
     
-    // Optionally, you can load trade requests automatically on page load:
+    // Optionally load trade requests automatically on page load
     // window.onload = loadTradeRequests;
   </script>
 </body>
