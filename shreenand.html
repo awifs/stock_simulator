@@ -271,7 +271,7 @@
     function fetchPortfolio() {
       const uid = document.getElementById('buyerUID').value;
       // Replace with your deployed script URL and action=getPortfolio
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getPortfolio&uid=' + uid;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getPortfolio&uid=' + uid;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -331,7 +331,7 @@
       
       const formData = new URLSearchParams(new FormData(form));
       // Replace with your deployed script URL with action=submitTrade
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=submitTrade';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -355,7 +355,7 @@
     // Fetch active incoming requests for seller A12
     function fetchIncomingRequests() {
       const sellerUID = "A12";
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -384,7 +384,7 @@
     // Process accept/reject action for a trade
     function processTrade(tradeId, action) {
       if (!confirm(`Are you sure you want to ${action === 'acceptTrade' ? 'accept' : 'reject'} this trade?`)) return;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
@@ -404,7 +404,7 @@
     
     // Fetch stocks data for the Stocks tab
     function fetchStocks() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getStocks';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -435,7 +435,7 @@
     
     // Fetch news flash data for the News Flash tab
     function fetchNews() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getNews';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getNews';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -460,7 +460,7 @@
     
     // Fetch leaderboard data for the Leaderboard tab
     function fetchLeaderboard() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getLeaderboard';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getLeaderboard';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
