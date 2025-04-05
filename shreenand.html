@@ -163,7 +163,7 @@
       e.preventDefault();
       const formData = new URLSearchParams(new FormData(form));
       // Use your script URL with action=submitTrade
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzOjuxfW4piHci4y2b_UUmw1HhOSXHg6YjNQqEszcQcnLrXbN9jDGb-0yUbDHw8DEbZHw/exec?action=submitTrade';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyTBHCKWLBfVBg_iJCMC_K7Rzgq4jPX8FseSNGoggwCZDzO2VESQr8vSFMWc_S2OlFldg/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -183,7 +183,7 @@
     // Fetch incoming trade requests for seller A12
 function fetchIncomingRequests() {
   const sellerUID = "A12";
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbzqaz8T4l70Oj_5J4D_EuVvaJCKDAfobEnMWyuYAo5sIu0pQ4DdRMJYzkUCdR_KGQsRKQ/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyTBHCKWLBfVBg_iJCMC_K7Rzgq4jPX8FseSNGoggwCZDzO2VESQr8vSFMWc_S2OlFldg/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
   
   fetch(scriptURL)
     .then(response => response.json())
@@ -213,7 +213,7 @@ function fetchIncomingRequests() {
     // Process Accept or Reject action for a trade
     function processTrade(tradeId, action) {
       if (!confirm(`Are you sure you want to ${action === 'acceptTrade' ? 'accept' : 'reject'} this trade?`)) return;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzOjuxfW4piHci4y2b_UUmw1HhOSXHg6YjNQqEszcQcnLrXbN9jDGb-0yUbDHw8DEbZHw/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyTBHCKWLBfVBg_iJCMC_K7Rzgq4jPX8FseSNGoggwCZDzO2VESQr8vSFMWc_S2OlFldg/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
