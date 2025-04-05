@@ -242,7 +242,10 @@
       </div>
     </div>
   </div>
-  
+
+
+
+
   <script>
     // Switch tabs and update sidebar active state
     function showTab(tabId) {
@@ -261,7 +264,7 @@
         fetchNews();
       } else if(tabId === 'leaderboardTab'){
         document.querySelector('.sidebar ul li:nth-child(5)').classList.add('active');
-        fetchLeaderboard();
+        loadLeaderboard();
       }
       document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
@@ -271,7 +274,7 @@
     function fetchPortfolio() {
       const uid = document.getElementById('buyerUID').value;
       // Replace with your deployed script URL and action=getPortfolio
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=getPortfolio&uid=' + uid;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx5SVeVU-p28ebHTy-lR4h4oDJRmrekWDeetFx4HqgyifbVtJbAp3pO59Bca5ZcPw5G8Q/exec?action=getPortfolio&uid=' + uid;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -331,7 +334,7 @@
       
       const formData = new URLSearchParams(new FormData(form));
       // Replace with your deployed script URL with action=submitTrade
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=submitTrade';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx5SVeVU-p28ebHTy-lR4h4oDJRmrekWDeetFx4HqgyifbVtJbAp3pO59Bca5ZcPw5G8Q/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -355,7 +358,7 @@
     // Fetch active incoming requests for seller A12
     function fetchIncomingRequests() {
       const sellerUID = "A12";
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx5SVeVU-p28ebHTy-lR4h4oDJRmrekWDeetFx4HqgyifbVtJbAp3pO59Bca5ZcPw5G8Q/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -384,7 +387,7 @@
     // Process accept/reject action for a trade
     function processTrade(tradeId, action) {
       if (!confirm(`Are you sure you want to ${action === 'acceptTrade' ? 'accept' : 'reject'} this trade?`)) return;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx5SVeVU-p28ebHTy-lR4h4oDJRmrekWDeetFx4HqgyifbVtJbAp3pO59Bca5ZcPw5G8Q/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
@@ -404,7 +407,7 @@
     
     // Fetch stocks data for the Stocks tab
     function fetchStocks() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=getStocks';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx5SVeVU-p28ebHTy-lR4h4oDJRmrekWDeetFx4HqgyifbVtJbAp3pO59Bca5ZcPw5G8Q/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -435,7 +438,7 @@
     
     // Fetch news flash data for the News Flash tab
     function fetchNews() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=getNews';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx5SVeVU-p28ebHTy-lR4h4oDJRmrekWDeetFx4HqgyifbVtJbAp3pO59Bca5ZcPw5G8Q/exec?action=getNews';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -457,10 +460,42 @@
           document.getElementById("newsData").innerHTML = "<p>Error loading news flash.</p>";
         });
     }
+
+    // Fetch and Display Leaderboard
+function loadLeaderboard() {
+  google.script.run.withSuccessHandler(renderLeaderboard).getLeaderboardData();
+}
+
+function renderLeaderboard(data) {
+  const container = document.getElementById('leaderboardContainer');
+  container.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>UID</th>
+          <th>Portfolio Value (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data.map((item, index) => `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td>${item.uid}</td>
+            <td>₹${item.portfolioValue.toLocaleString()}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
     
     // Fetch leaderboard data for the Leaderboard tab
     function fetchLeaderboard() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbyAZYRkJsQhMO0lxQ1Z4M3HXej9GHD2fmof4nGQNyFdHZX5lo57hcmnpVD5RKZNgOPITw/exec?action=getLeaderboard';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx5SVeVU-p28ebHTy-lR4h4oDJRmrekWDeetFx4HqgyifbVtJbAp3pO59Bca5ZcPw5G8Q/exec?action=getLeaderboard';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
