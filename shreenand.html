@@ -181,33 +181,34 @@
     });
     
     // Fetch incoming trade requests for seller A12
-    function fetchIncomingRequests() {
-      const sellerUID = "A12";
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzOjuxfW4piHci4y2b_UUmw1HhOSXHg6YjNQqEszcQcnLrXbN9jDGb-0yUbDHw8DEbZHw/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
-      
-      fetch(scriptURL)
-        .then(response => response.json())
-        .then(data => {
-          const container = document.getElementById("incomingRequests");
-          if (data.length === 0) {
-            container.innerHTML = "<p>No active incoming requests.</p>";
-          } else {
-            let html = "<ul>";
-            data.forEach(req => {
-              html += `<li>
-                        <p><strong>Trade ID:</strong> ${req.tradeId}</p>
-                        <p>From: ${req.buyerName} (${req.buyerUID})</p>
-                        <p>Stock: ${req.stock} - ${req.quantity} shares @ $${req.price} on ${new Date(req.timestamp).toLocaleString()}</p>
-                        <button class="btn btn-accept" onclick="processTrade('${req.tradeId}', 'acceptTrade')">Accept</button>
-                        <button class="btn btn-reject" onclick="processTrade('${req.tradeId}', 'rejectTrade')">Reject</button>
-                      </li>`;
-            });
-            html += "</ul>";
-            container.innerHTML = html;
-          }
-        })
-        .catch(error => console.error("Error fetching incoming requests:", error));
-    }
+function fetchIncomingRequests() {
+  const sellerUID = "A12";
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzqaz8T4l70Oj_5J4D_EuVvaJCKDAfobEnMWyuYAo5sIu0pQ4DdRMJYzkUCdR_KGQsRKQ/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+  
+  fetch(scriptURL)
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById("incomingRequests");
+      if (data.length === 0) {
+        container.innerHTML = "<p>No active incoming requests.</p>";
+      } else {
+        let html = "<ul>";
+        data.forEach(req => {
+          html += `<li>
+                    <p><strong>Trade ID:</strong> ${req.tradeId}</p>
+                    <p>From: ${req.buyerName} (${req.buyerUID})</p>
+                    <p>Stock: ${req.stock} - ${req.quantity} shares @ $${req.price} on ${new Date(req.timestamp).toLocaleString()}</p>
+                    <button class="btn btn-accept" onclick="processTrade('${req.tradeId}', 'acceptTrade')">Accept</button>
+                    <button class="btn btn-reject" onclick="processTrade('${req.tradeId}', 'rejectTrade')">Reject</button>
+                  </li>`;
+        });
+        html += "</ul>";
+        container.innerHTML = html;
+      }
+    })
+    .catch(error => console.error("Error fetching incoming requests:", error));
+}
+
     
     // Process Accept or Reject action for a trade
     function processTrade(tradeId, action) {
