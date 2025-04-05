@@ -25,7 +25,7 @@
       text-align: center;
       margin-bottom: 30px;
       font-size: 24px;
-      letter-spacing: 2px;
+      line-height: 1.2;
     }
     .sidebar ul { list-style: none; }
     .sidebar ul li {
@@ -43,8 +43,13 @@
       margin-left: 240px;
       padding: 20px;
     }
-    .header { margin-bottom: 20px; }
-    .header h1 { font-size: 28px; margin-bottom: 5px; }
+    .header {
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
     .header p { font-size: 16px; }
 
     /* CARDS */
@@ -56,38 +61,26 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .card h2 { margin-bottom: 15px; }
-    
-    /* TABLE STYLES */
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { padding: 10px; border: 1px solid #bdc3c7; text-align: left; }
-    th { background: #ecf0f1; }
-    
+
     /* FORM STYLES */
     form label { display: block; margin: 10px 0 5px; }
     form input, form select { padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 3px; }
     form button { margin-top: 15px; padding: 10px 15px; border: none; background-color: #27ae60; color: #fff; border-radius: 3px; cursor: pointer; }
-    form button:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Loading spinner style */
-    .spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(0,0,0,0.2);
-      border-radius: 50%;
-      border-top-color: #27ae60;
-      animation: spin 1s ease-in-out infinite;
-      vertical-align: middle;
-      margin-left: 10px;
+    /* BUTTON STYLES */
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-right: 10px;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* Responsive holdings table */
-    .holdings-table {
-      overflow-x: auto;
-    }
+    .btn-accept { background-color: #27ae60; color: #fff; }
+    .btn-reject { background-color: #c0392b; color: #fff; }
+
+    /* TABS */
+    .tab { display: none; }
+    .tab.active { display: block; }
   </style>
 </head>
 <body>
@@ -95,18 +88,22 @@
   <div class="sidebar">
     <h2>AWIFS<br>Mock Stock</h2>
     <ul>
-      <li class="active" onclick="showSection('tradeSection')">Trade</li>
-      <li onclick="showSection('incomingRequestsSection')">Incoming Requests</li>
-      <li onclick="showSection('portfolioSection'); loadPortfolio();">Portfolio</li>
+      <li class="active" onclick="showTab('submitTrade')">Submit Trade Request</li>
+      <li onclick="showTab('incomingRequestsTab')">Incoming Requests</li>
     </ul>
   </div>
   
   <!-- MAIN CONTENT -->
   <div class="main-content">
-    <!-- Trade Section -->
-    <div id="tradeSection" class="section">
-      <h1>Submit a Trade Request</h1>
+    <div class="header">
+      <h1>Welcome, A12 - Shreenand</h1>
+      <p>Participant Portal</p>
+    </div>
+    
+    <!-- Submit Trade Request Tab -->
+    <div id="submitTrade" class="tab active">
       <div class="card">
+        <h2>Submit a Trade Request</h2>
         <form id="tradeForm">
           <!-- Hidden Buyer Info -->
           <input type="hidden" id="buyerUID" name="buyerUID" value="A12">
@@ -125,92 +122,46 @@
           <label for="price">Price:</label>
           <input type="number" step="0.01" id="price" name="price" required>
           
-          <button type="submit" id="submitTradeBtn">Submit Trade Request</button>
-          <!-- Loading spinner (hidden by default) -->
-          <span id="loadingSpinner" class="spinner" style="display:none;"></span>
+          <button type="submit">Submit Trade Request</button>
         </form>
         <p id="statusMessage"></p>
       </div>
     </div>
     
-    <!-- Incoming Requests Section -->
-    <div id="incomingRequestsSection" class="section" style="display: none;">
-      <h1>Incoming Trade Requests</h1>
-      <div class="card" id="incomingRequests">
-        <!-- Active trades will be loaded here -->
-      </div>
-    </div>
-    
-    <!-- Portfolio Section -->
-    <div id="portfolioSection" class="section" style="display: none;">
-      <h1>Your Portfolio</h1>
-      <div class="card" id="portfolioSummary">
-        <!-- Portfolio summary will be dynamically loaded -->
-        <h2>Portfolio Summary</h2>
-        <p><strong>Funds:</strong> $<span id="fundsValue">0</span></p>
-        <p><strong>Portfolio Value:</strong> $<span id="portfolioValue">0</span></p>
-      </div>
-      
-      <div class="card" id="holdingsCard">
-        <h2>Your Holdings</h2>
-        <div class="holdings-table">
-          <table id="holdingsTable">
-            <thead>
-              <tr>
-                <th>Stock</th>
-                <th>Quantity</th>
-                <th>Current Price</th>
-                <th>Total Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Holdings data will be populated here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
+    <!-- Incoming Requests Tab -->
+    <div id="incomingRequestsTab" class="tab">
       <div class="card">
-        <h2>Portfolio Performance</h2>
-        <canvas id="performanceChart" width="400" height="200"></canvas>
-      </div>
-      
-      <div class="card" id="stockPricesCard">
-        <h2>Current Stock Prices</h2>
-        <div id="stockPrices">
-          <!-- Stock prices will be populated here -->
+        <h2>Incoming Trade Requests</h2>
+        <div id="incomingRequests">
+          <!-- Active trades for seller A12 will be loaded here -->
         </div>
       </div>
     </div>
   </div>
   
-  <!-- SCRIPTS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // Function to switch between sections
-    function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-      document.getElementById(sectionId).style.display = 'block';
-      // Update sidebar active state
+    // Switch tabs and update sidebar active state
+    function showTab(tabId) {
       document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
-      document.querySelector(`.sidebar ul li[onclick*="${sectionId.replace('Section','')}"]`).classList.add('active');
+      if (tabId === 'submitTrade') {
+        document.querySelector('.sidebar ul li:nth-child(1)').classList.add('active');
+      } else {
+        document.querySelector('.sidebar ul li:nth-child(2)').classList.add('active');
+        fetchIncomingRequests();
+      }
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
     }
     
-    // Trade submission with loading spinner
-    const tradeForm = document.getElementById('tradeForm');
+    // Trade submission logic
+    const form = document.getElementById('tradeForm');
     const statusMessage = document.getElementById('statusMessage');
-    const submitTradeBtn = document.getElementById('submitTradeBtn');
-    const loadingSpinner = document.getElementById('loadingSpinner');
     
-    tradeForm.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      // Disable button and show spinner
-      submitTradeBtn.disabled = true;
-      loadingSpinner.style.display = 'inline-block';
-      
-      const formData = new URLSearchParams(new FormData(tradeForm));
-      // Replace with your deployed Apps Script URL
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwPsCNW8zb6Sb0UWGLAxU1NcnSudiHOqqkzUCWbAQi0GVbiSTBKXMIkn7NLa5W4zuIdXA/exec?action=submitTrade';
+      const formData = new URLSearchParams(new FormData(form));
+      // Use your deployed script URL with action=submitTrade
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyAZYRkJsQhMO0lxQ1Z4M3HXej9GHD2fmof4nGQNyFdHZX5lo57hcmnpVD5RKZNgOPITw/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -219,22 +170,19 @@
       })
       .then(() => {
         statusMessage.textContent = 'Trade request submitted successfully!';
-        tradeForm.reset();
+        form.reset();
       })
       .catch(error => {
         console.error('Error!', error.message);
         statusMessage.textContent = 'Submission failed. Please try again.';
-      })
-      .finally(() => {
-        submitTradeBtn.disabled = false;
-        loadingSpinner.style.display = 'none';
       });
     });
     
-    // Function to fetch and display incoming trade requests (existing functionality)
+    // Fetch active incoming requests for seller A12
     function fetchIncomingRequests() {
-      const sellerUID = "A12"; // adjust accordingly
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwPsCNW8zb6Sb0UWGLAxU1NcnSudiHOqqkzUCWbAQi0GVbiSTBKXMIkn7NLa5W4zuIdXA/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      const sellerUID = "A12";
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyAZYRkJsQhMO0lxQ1Z4M3HXej9GHD2fmof4nGQNyFdHZX5lo57hcmnpVD5RKZNgOPITw/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -248,8 +196,8 @@
                         <p><strong>Trade ID:</strong> ${req.tradeId}</p>
                         <p>From: ${req.buyerName} (${req.buyerUID})</p>
                         <p>Stock: ${req.stock} – ${req.quantity} shares @ $${req.price} on ${new Date(req.timestamp).toLocaleString()}</p>
-                        <button onclick="processTrade('${req.tradeId}', 'acceptTrade')">Accept</button>
-                        <button onclick="processTrade('${req.tradeId}', 'rejectTrade')">Reject</button>
+                        <button class="btn btn-accept" onclick="processTrade('${req.tradeId}', 'acceptTrade')">Accept</button>
+                        <button class="btn btn-reject" onclick="processTrade('${req.tradeId}', 'rejectTrade')">Reject</button>
                       </li>`;
             });
             html += "</ul>";
@@ -259,10 +207,10 @@
         .catch(error => console.error("Error fetching incoming requests:", error));
     }
     
-    // Process accept/reject trade
+    // Process accept/reject action for a trade
     function processTrade(tradeId, action) {
       if (!confirm(`Are you sure you want to ${action === 'acceptTrade' ? 'accept' : 'reject'} this trade?`)) return;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwPsCNW8zb6Sb0UWGLAxU1NcnSudiHOqqkzUCWbAQi0GVbiSTBKXMIkn7NLa5W4zuIdXA/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyAZYRkJsQhMO0lxQ1Z4M3HXej9GHD2fmof4nGQNyFdHZX5lo57hcmnpVD5RKZNgOPITw/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
@@ -275,84 +223,16 @@
       .then(response => response.text())
       .then(result => {
         alert(result);
+        // Refresh incoming requests list after processing the trade
         fetchIncomingRequests();
       })
       .catch(error => console.error('Error processing trade:', error));
     }
     
-    // Portfolio: Fetch portfolio data and update the page
-    function loadPortfolio() {
-      const uid = "A12"; // use the logged-in UID
-      // Replace with your deployed Apps Script URL endpoint for portfolio data
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwPsCNW8zb6Sb0UWGLAxU1NcnSudiHOqqkzUCWbAQi0GVbiSTBKXMIkn7NLa5W4zuIdXA/exec?action=getPortfolio&uid=' + uid;
-      fetch(scriptURL)
-        .then(response => response.json())
-        .then(data => {
-          if (!data.participant) return;
-          // Update summary
-          document.getElementById('fundsValue').textContent = data.participant.funds;
-          document.getElementById('portfolioValue').textContent = data.participant.portfolioValue;
-          
-          // Update holdings table
-          const holdingsTbody = document.getElementById('holdingsTable').querySelector('tbody');
-          holdingsTbody.innerHTML = '';
-          for (let stock in data.participant.holdings) {
-            const qty = data.participant.holdings[stock];
-            const currentPrice = data.currentPrices[stock] || 0;
-            const totalValue = qty * currentPrice;
-            const row = `<tr>
-                          <td>${stock}</td>
-                          <td>${qty}</td>
-                          <td>$${currentPrice}</td>
-                          <td>$${totalValue}</td>
-                        </tr>`;
-            holdingsTbody.innerHTML += row;
-          }
-          
-          // Update current stock prices card
-          const stockPricesDiv = document.getElementById('stockPrices');
-          stockPricesDiv.innerHTML = '';
-          for (let symbol in data.currentPrices) {
-            stockPricesDiv.innerHTML += `<p><strong>${symbol}:</strong> $${data.currentPrices[symbol]}</p>`;
-          }
-          
-          // Optionally, update the performance chart with real data if available.
-          // Here we just create a dummy chart:
-          updateChart();
-        })
-        .catch(error => console.error("Error loading portfolio:", error));
-    }
-    
-    // Update portfolio performance chart (dummy data here; replace with real round data if available)
-    function updateChart() {
-      const ctx = document.getElementById('performanceChart').getContext('2d');
-      // If a chart already exists, destroy it before creating a new one.
-      if (window.performanceChart) {
-        window.performanceChart.destroy();
-      }
-      window.performanceChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Round 1', 'Round 2', 'Round 3', 'Round 4'], // update with your round labels
-          datasets: [{
-            label: 'Portfolio Value',
-            data: [30000, 32000, 31000, 33000], // replace with dynamic data per round if available
-            backgroundColor: 'rgba(39, 174, 96, 0.2)',
-            borderColor: 'rgba(39, 174, 96, 1)',
-            borderWidth: 2,
-            fill: true
-          }]
-        },
-        options: { scales: { y: { beginAtZero: false } } }
-      });
-    }
-    
-    // Initial load: show trade section by default
+    // Show submitTrade tab by default on page load
     window.onload = function() {
-      showSection('tradeSection');
-      // You might want to load incoming requests if needed:
-      // fetchIncomingRequests();
-    };
+      showTab('submitTrade');
+    }
   </script>
 </body>
 </html>
