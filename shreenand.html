@@ -2,48 +2,89 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Stock Market Simulator Trade Request</title>
+  <title>Stock Market Simulator</title>
+  <style>
+    /* Simple styling for tabs */
+    .tab {
+      display: none;
+    }
+    .tab.active {
+      display: block;
+    }
+    .tab-buttons button {
+      margin-right: 10px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Submit a Trade Request</h1>
-  <form id="tradeForm">
-    <!-- Hidden Buyer Info (automatically filled) -->
-    <input type="hidden" id="buyerUID" name="buyerUID" value="A12">
-    <input type="hidden" id="buyerName" name="buyerName" value="Shreenand">
+  <h1>AWIFS - Stock Market Simulator</h1>
+  
+  <div class="tab-buttons">
+    <button onclick="showTab('submitTrade')">Submit Trade Request</button>
+    <button onclick="showTab('incomingRequestsTab')">Incoming Requests</button>
+  </div>
+  
+  <!-- Submit Trade Request Tab -->
+  <div id="submitTrade" class="tab active">
+    <h2>Submit a Trade Request</h2>
+    <form id="tradeForm">
+      <!-- Hidden Buyer Info (auto-filled) -->
+      <input type="hidden" id="buyerUID" name="buyerUID" value="A12">
+      <input type="hidden" id="buyerName" name="buyerName" value="Shreenand">
+      <p><strong>Logged in as:</strong> A12 - Shreenand</p>
 
-    <p><strong>Logged in as:</strong> A12 - Shreenand</p>
+      <label for="sellerUID">Seller UID:</label>
+      <input type="text" id="sellerUID" name="sellerUID" required><br><br>
 
-    <!-- Only seller input and trade details -->
-    <label for="sellerUID">Seller UID:</label>
-    <input type="text" id="sellerUID" name="sellerUID" required><br><br>
+      <label for="stock">Stock:</label>
+      <input type="text" id="stock" name="stock" required><br><br>
 
-    <label for="stock">Stock:</label>
-    <input type="text" id="stock" name="stock" required><br><br>
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" name="quantity" required><br><br>
 
-    <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" name="quantity" required><br><br>
+      <label for="price">Price:</label>
+      <input type="number" step="0.01" id="price" name="price" required><br><br>
 
-    <label for="price">Price:</label>
-    <input type="number" step="0.01" id="price" name="price" required><br><br>
-
-    <button type="submit">Submit Trade Request</button>
-  </form>
-
-  <p id="statusMessage"></p>
-
+      <button type="submit">Submit Trade Request</button>
+    </form>
+    <p id="statusMessage"></p>
+  </div>
+  
+  <!-- Incoming Requests Tab -->
+  <div id="incomingRequestsTab" class="tab">
+    <h2>Incoming Trade Requests</h2>
+    <div id="incomingRequests">
+      <!-- Requests will be loaded here -->
+    </div>
+  </div>
+  
   <script>
+    // Tab switching function
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.getElementById(tabId).classList.add('active');
+      
+      // If switching to the Incoming Requests tab, fetch the data
+      if (tabId === 'incomingRequestsTab') {
+        fetchIncomingRequests();
+      }
+    }
+    
+    // Submit Trade Request logic
     const form = document.getElementById('tradeForm');
     const statusMessage = document.getElementById('statusMessage');
-
+    
     form.addEventListener('submit', function(e) {
-      e.preventDefault(); // Prevent the default form submission
-
-      // Collect the form data
+      e.preventDefault(); // Prevent default form submission
+      
+      // Collect form data
       const formData = new URLSearchParams(new FormData(form));
-
+      
       // Replace with your deployed Google Apps Script web app URL
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbyw3cy_aNIbQz68RxjKbIYZxHk7nv0ipVYfrH9ZMHoiqNdcEx0UAaJYV27PRSJWOzFD/exec';
-
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzjWue52YtXDMw8m1T_6X1SfAgTCWbfg3H2Iz0y405DKRCtMkcVoVnp-u5FQeADtFz1eQ/exec';
+      
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -61,6 +102,32 @@
         statusMessage.textContent = 'Submission failed. Please try again.';
       });
     });
+    
+    // Function to fetch incoming requests for the seller
+    function fetchIncomingRequests() {
+      // Use the seller's UID (assuming the same logged-in UID here)
+      const sellerUID = "A12";
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzjWue52YtXDMw8m1T_6X1SfAgTCWbfg3H2Iz0y405DKRCtMkcVoVnp-u5FQeADtFz1eQ/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      
+      fetch(scriptURL)
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById("incomingRequests");
+          if (data.length === 0) {
+            container.innerHTML = "<p>No active incoming requests.</p>";
+          } else {
+            let html = "<ul>";
+            data.forEach(req => {
+              html += `<li>From ${req.buyerName} (${req.buyerUID}) - ${req.stock}: ${req.quantity} shares @ $${req.price} on ${new Date(req.timestamp).toLocaleString()}</li>`;
+            });
+            html += "</ul>";
+            container.innerHTML = html;
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching incoming requests: ", error);
+        });
+    }
   </script>
 </body>
 </html>
