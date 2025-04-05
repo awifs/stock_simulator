@@ -4,20 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AWIFS - Mock Stock Competition</title>
+  <!-- Google Fonts for improved typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { font-family: 'Arial', sans-serif; background: #f4f7f9; color: #333; }
+    body, html { font-family: 'Roboto', sans-serif; background: #f0f2f5; color: #444; }
     
     /* SIDEBAR */
     .sidebar {
       position: fixed;
       top: 0;
       left: 0;
-      width: 220px;
+      width: 240px;
       height: 100vh;
-      background-color: #2c3e50;
-      color: #ecf0f1;
+      background: linear-gradient(180deg, #283e56, #2e5984);
+      color: #fff;
       padding: 20px;
       overflow-y: auto;
     }
@@ -33,6 +35,7 @@
       margin-bottom: 10px;
       cursor: pointer;
       border-radius: 3px;
+      transition: background 0.3s;
     }
     .sidebar ul li:hover, .sidebar ul li.active {
       background-color: #34495e;
@@ -40,7 +43,7 @@
     
     /* MAIN CONTENT */
     .main-content {
-      margin-left: 240px;
+      margin-left: 260px;
       padding: 20px;
     }
     .header {
@@ -52,15 +55,44 @@
     }
     .header p { font-size: 16px; }
     
-    /* CARDS */
+    /* CARD STYLES */
     .card {
       background: #fff;
       padding: 20px;
       margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card h2 { margin-bottom: 15px; }
+    
+    /* Portfolio Section Redesign */
+    .portfolio-container {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .portfolio-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    .portfolio-header h2 {
+      font-size: 24px;
+      font-weight: 500;
+    }
+    .portfolio-header img {
+      width: 120px;
+      height: auto;
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .card h2 { margin-bottom: 15px; }
     
     /* FORM STYLES */
     form label { display: block; margin: 10px 0 5px; }
@@ -98,7 +130,7 @@
       to { transform: rotate(360deg); }
     }
     
-    /* Portfolio Section Styling */
+    /* Portfolio Table Styling */
     .portfolio-container table {
       width: 100%;
       border-collapse: collapse;
@@ -170,7 +202,10 @@
     <!-- Portfolio Tab -->
     <div id="portfolioTab" class="tab active">
       <div class="card portfolio-container">
-        <h2>Your Portfolio</h2>
+        <div class="portfolio-header">
+          <h2>Your Portfolio</h2>
+          <img src="https://github.com/awifs/stock_simulator/blob/main/Screenshot%202025-04-05%20200317.png?raw=true" alt="Portfolio Overview">
+        </div>
         <div id="portfolioData">
           <p>Loading portfolio data...</p>
         </div>
@@ -271,7 +306,7 @@
     function fetchPortfolio() {
       const uid = document.getElementById('buyerUID').value;
       // Replace with your deployed script URL and action=getPortfolio
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getPortfolio&uid=' + uid;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getPortfolio&uid=' + uid;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -331,7 +366,7 @@
       
       const formData = new URLSearchParams(new FormData(form));
       // Replace with your deployed script URL with action=submitTrade
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=submitTrade';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -355,7 +390,7 @@
     // Fetch active incoming requests for seller A15
     function fetchIncomingRequests() {
       const sellerUID = "A15";
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -384,7 +419,7 @@
     // Process accept/reject action for a trade
     function processTrade(tradeId, action) {
       if (!confirm(`Are you sure you want to ${action === 'acceptTrade' ? 'accept' : 'reject'} this trade?`)) return;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
@@ -404,7 +439,7 @@
     
     // Fetch stocks data for the Stocks tab
     function fetchStocks() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getStocks';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -435,7 +470,7 @@
     
     // Fetch news flash data for the News Flash tab
     function fetchNews() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getNews';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getNews';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -460,7 +495,7 @@
     
     // Fetch leaderboard data for the Leaderboard tab
     function fetchLeaderboard() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxfVDiu-10JDpdpK_ONpkeT9POFljstA37ly2g2PfFbBYscGXca3jFQlr5fzPetAWYQfA/exec?action=getLeaderboard';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getLeaderboard';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
