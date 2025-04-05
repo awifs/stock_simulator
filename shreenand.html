@@ -101,7 +101,7 @@
     </div>
     
     <!-- Submit Trade Request Tab -->
-    <div id="submitTrade" class="tab active">
+    <div id="submitTrade" class="tab" style="display: block;">
       <div class="card">
         <h2>Submit a Trade Request</h2>
         <form id="tradeForm">
@@ -129,7 +129,7 @@
     </div>
     
     <!-- Incoming Requests Tab -->
-    <div id="incomingRequestsTab" class="tab">
+    <div id="incomingRequestsTab" class="tab" style="display: none;">
       <div class="card">
         <h2>Incoming Trade Requests</h2>
         <div id="incomingRequests">
@@ -140,9 +140,8 @@
   </div>
   
   <script>
-    // Tab switching function
+    // Function to switch tabs and update sidebar active state
     function showTab(tabId) {
-      // Update sidebar active state
       document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
       if (tabId === 'submitTrade') {
         document.querySelector('.sidebar ul li:nth-child(1)').classList.add('active');
@@ -150,7 +149,6 @@
         document.querySelector('.sidebar ul li:nth-child(2)').classList.add('active');
         fetchIncomingRequests();
       }
-      // Hide all tabs and show selected one
       document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
       document.getElementById(tabId).style.display = 'block';
     }
@@ -162,8 +160,8 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       const formData = new URLSearchParams(new FormData(form));
-      // Use your script URL with action=submitTrade
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbyTBHCKWLBfVBg_iJCMC_K7Rzgq4jPX8FseSNGoggwCZDzO2VESQr8vSFMWc_S2OlFldg/exec?action=submitTrade';
+      // Use your deployed script URL with action=submitTrade
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx2zSO4fMwzFvVI1is4b7KIeTPp0ZGkErMr2GXRxcyQrRv6g1sfHgGa_ADnE9AayXE0/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -181,39 +179,38 @@
     });
     
     // Fetch incoming trade requests for seller A12
-function fetchIncomingRequests() {
-  const sellerUID = "A12";
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbyTBHCKWLBfVBg_iJCMC_K7Rzgq4jPX8FseSNGoggwCZDzO2VESQr8vSFMWc_S2OlFldg/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
-  
-  fetch(scriptURL)
-    .then(response => response.json())
-    .then(data => {
-      const container = document.getElementById("incomingRequests");
-      if (data.length === 0) {
-        container.innerHTML = "<p>No active incoming requests.</p>";
-      } else {
-        let html = "<ul>";
-        data.forEach(req => {
-          html += `<li>
-                    <p><strong>Trade ID:</strong> ${req.tradeId}</p>
-                    <p>From: ${req.buyerName} (${req.buyerUID})</p>
-                    <p>Stock: ${req.stock} - ${req.quantity} shares @ $${req.price} on ${new Date(req.timestamp).toLocaleString()}</p>
-                    <button class="btn btn-accept" onclick="processTrade('${req.tradeId}', 'acceptTrade')">Accept</button>
-                    <button class="btn btn-reject" onclick="processTrade('${req.tradeId}', 'rejectTrade')">Reject</button>
-                  </li>`;
-        });
-        html += "</ul>";
-        container.innerHTML = html;
-      }
-    })
-    .catch(error => console.error("Error fetching incoming requests:", error));
-}
-
+    function fetchIncomingRequests() {
+      const sellerUID = "A12";
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx2zSO4fMwzFvVI1is4b7KIeTPp0ZGkErMr2GXRxcyQrRv6g1sfHgGa_ADnE9AayXE0/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      
+      fetch(scriptURL)
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById("incomingRequests");
+          if (data.length === 0) {
+            container.innerHTML = "<p>No active incoming requests.</p>";
+          } else {
+            let html = "<ul>";
+            data.forEach(req => {
+              html += `<li style="margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <p><strong>Trade ID:</strong> ${req.tradeId}</p>
+                        <p>From: ${req.buyerName} (${req.buyerUID})</p>
+                        <p>Stock: ${req.stock} – ${req.quantity} shares @ $${req.price} on ${new Date(req.timestamp).toLocaleString()}</p>
+                        <button class="btn btn-accept" onclick="processTrade('${req.tradeId}', 'acceptTrade')">Accept</button>
+                        <button class="btn btn-reject" onclick="processTrade('${req.tradeId}', 'rejectTrade')">Reject</button>
+                      </li>`;
+            });
+            html += "</ul>";
+            container.innerHTML = html;
+          }
+        })
+        .catch(error => console.error("Error fetching incoming requests:", error));
+    }
     
     // Process Accept or Reject action for a trade
     function processTrade(tradeId, action) {
       if (!confirm(`Are you sure you want to ${action === 'acceptTrade' ? 'accept' : 'reject'} this trade?`)) return;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbyTBHCKWLBfVBg_iJCMC_K7Rzgq4jPX8FseSNGoggwCZDzO2VESQr8vSFMWc_S2OlFldg/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx2zSO4fMwzFvVI1is4b7KIeTPp0ZGkErMr2GXRxcyQrRv6g1sfHgGa_ADnE9AayXE0/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
@@ -226,13 +223,13 @@ function fetchIncomingRequests() {
       .then(response => response.text())
       .then(result => {
         alert(result);
-        // Refresh the incoming requests list
+        // Refresh the incoming requests list after action
         fetchIncomingRequests();
       })
       .catch(error => console.error('Error processing trade:', error));
     }
     
-    // On page load, show the submitTrade tab by default
+    // Show submitTrade tab by default
     window.onload = function() {
       showTab('submitTrade');
     }
