@@ -125,6 +125,31 @@
     .stocks-table th {
       background-color: #f8f8f8;
     }
+    
+    /* News Flash Styling */
+    .news-item {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+      font-size: 18px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Leaderboard Table Styling */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .leaderboard-table th, .leaderboard-table td {
+      text-align: left;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+    .leaderboard-table th {
+      background-color: #f8f8f8;
+    }
   </style>
 </head>
 <body>
@@ -135,6 +160,8 @@
       <li class="active" onclick="showTab('portfolioTab')">Portfolio</li>
       <li onclick="showTab('tradeTab')">Trades</li>
       <li onclick="showTab('stocksTab')">Stocks</li>
+      <li onclick="showTab('newsTab')">News Flash</li>
+      <li onclick="showTab('leaderboardTab')">Leaderboard</li>
     </ul>
   </div>
   
@@ -194,6 +221,26 @@
         </div>
       </div>
     </div>
+    
+    <!-- News Flash Tab -->
+    <div id="newsTab" class="tab">
+      <div class="card">
+        <h2>News flash</h2>
+        <div id="newsData">
+          <p>Loading news flash...</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Leaderboard Tab -->
+    <div id="leaderboardTab" class="tab">
+      <div class="card">
+        <h2>Leaderboard</h2>
+        <div id="leaderboardData">
+          <p>Loading leaderboard data...</p>
+        </div>
+      </div>
+    </div>
   </div>
   
   <script>
@@ -209,6 +256,12 @@
       } else if(tabId === 'stocksTab'){
         document.querySelector('.sidebar ul li:nth-child(3)').classList.add('active');
         fetchStocks();
+      } else if(tabId === 'newsTab'){
+        document.querySelector('.sidebar ul li:nth-child(4)').classList.add('active');
+        fetchNews();
+      } else if(tabId === 'leaderboardTab'){
+        document.querySelector('.sidebar ul li:nth-child(5)').classList.add('active');
+        fetchLeaderboard();
       }
       document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
@@ -218,7 +271,7 @@
     function fetchPortfolio() {
       const uid = document.getElementById('buyerUID').value;
       // Replace with your deployed script URL and action=getPortfolio
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxA324FitKHJAmPKtSzXHuyP_pYIfdlkZP4T10Nda31T-9F9KYHCWiysw2ZInTfKjABlQ/exec?action=getPortfolio&uid=' + uid;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=getPortfolio&uid=' + uid;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -278,7 +331,7 @@
       
       const formData = new URLSearchParams(new FormData(form));
       // Replace with your deployed script URL with action=submitTrade
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxA324FitKHJAmPKtSzXHuyP_pYIfdlkZP4T10Nda31T-9F9KYHCWiysw2ZInTfKjABlQ/exec?action=submitTrade';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -302,7 +355,7 @@
     // Fetch active incoming requests for seller A12
     function fetchIncomingRequests() {
       const sellerUID = "A12";
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxA324FitKHJAmPKtSzXHuyP_pYIfdlkZP4T10Nda31T-9F9KYHCWiysw2ZInTfKjABlQ/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -331,7 +384,7 @@
     // Process accept/reject action for a trade
     function processTrade(tradeId, action) {
       if (!confirm(`Are you sure you want to ${action === 'acceptTrade' ? 'accept' : 'reject'} this trade?`)) return;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxA324FitKHJAmPKtSzXHuyP_pYIfdlkZP4T10Nda31T-9F9KYHCWiysw2ZInTfKjABlQ/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
@@ -351,7 +404,7 @@
     
     // Fetch stocks data for the Stocks tab
     function fetchStocks() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxA324FitKHJAmPKtSzXHuyP_pYIfdlkZP4T10Nda31T-9F9KYHCWiysw2ZInTfKjABlQ/exec?action=getStocks';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -377,6 +430,66 @@
         .catch(error => {
           console.error("Error fetching stocks data:", error);
           document.getElementById("stocksData").innerHTML = "<p>Error loading stock data.</p>";
+        });
+    }
+    
+    // Fetch news flash data for the News Flash tab
+    function fetchNews() {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzF-CyAarqn1QrwYzxL7ICLte-WAv6_m6B5QXCnSzMmLlpBiyPG53cAmvjlY7gYGGkRUA/exec?action=getNews';
+      fetch(scriptURL)
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById("newsData");
+          if (data.length === 0) {
+            container.innerHTML = "<p>No news flash available.</p>";
+          } else {
+            let html = "";
+            data.forEach(item => {
+              html += `<div class="news-item">
+                        <p>${item.news}</p>
+                      </div>`;
+            });
+            container.innerHTML = html;
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching news data:", error);
+          document.getElementById("newsData").innerHTML = "<p>Error loading news flash.</p>";
+        });
+    }
+    
+    // Fetch leaderboard data for the Leaderboard tab
+    function fetchLeaderboard() {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyAZYRkJsQhMO0lxQ1Z4M3HXej9GHD2fmof4nGQNyFdHZX5lo57hcmnpVD5RKZNgOPITw/exec?action=getLeaderboard';
+      fetch(scriptURL)
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById("leaderboardData");
+          if (data.length === 0) {
+            container.innerHTML = "<p>No leaderboard data available.</p>";
+          } else {
+            let html = `<table class="leaderboard-table">
+                          <tr>
+                            <th>Rank</th>
+                            <th>UID</th>
+                            <th>Name</th>
+                            <th>Portfolio Value</th>
+                          </tr>`;
+            data.forEach((participant, index) => {
+              html += `<tr>
+                        <td>${index + 1}</td>
+                        <td>${participant.uid}</td>
+                        <td>${participant.name}</td>
+                        <td>$${participant.portfolioValue.toFixed(2)}</td>
+                      </tr>`;
+            });
+            html += `</table>`;
+            container.innerHTML = html;
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching leaderboard data:", error);
+          document.getElementById("leaderboardData").innerHTML = "<p>Error loading leaderboard data.</p>";
         });
     }
     
