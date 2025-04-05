@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -226,7 +226,17 @@
           <input type="text" id="sellerUID" name="sellerUID" required>
           
           <label for="stock">Stock:</label>
-          <input type="text" id="stock" name="stock" required>
+          <!-- Dropdown menu for stock selection -->
+          <select id="stock" name="stock" required>
+            <option value="">Select Stock</option>
+            <option value="Apple">Apple</option>
+            <option value="Google">Google</option>
+            <option value="FZ">FZ</option>
+            <option value="THC">THC</option>
+            <option value="Ashoka">Ashoka</option>
+            <option value="Zomato">Zomato</option>
+            <!-- Add more options as needed -->
+          </select>
           
           <label for="quantity">Quantity:</label>
           <input type="number" id="quantity" name="quantity" required>
@@ -305,7 +315,6 @@
     // Fetch portfolio data for the logged-in participant
     function fetchPortfolio() {
       const uid = document.getElementById('buyerUID').value;
-      // Replace with your deployed script URL and action=getPortfolio
       const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getPortfolio&uid=' + uid;
       
       fetch(scriptURL)
@@ -365,7 +374,6 @@
       submitButton.disabled = true;
       
       const formData = new URLSearchParams(new FormData(form));
-      // Replace with your deployed script URL with action=submitTrade
       const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
