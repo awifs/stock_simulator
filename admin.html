@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -219,20 +219,43 @@
         <form id="tradeForm">
           <!-- Hidden Buyer Info -->
           <input type="hidden" id="buyerUID" name="buyerUID" value="A10">
-          <input type="hidden" id="buyerName" name="buyerName" value="Awifs_Admin">
-          <p><strong>Logged in as:</strong> A10 - Awifs_Admin</p>
+          <input type="hidden" id="buyerName" name="buyerName" value="Admin">
+          <p><strong>Logged in as:</strong> A10 - Admin</p>
           
           <label for="sellerUID">Seller UID:</label>
           <input type="text" id="sellerUID" name="sellerUID" required>
-          
+
           <label for="stock">Stock:</label>
-          <input type="text" id="stock" name="stock" required>
+<!-- Dropdown menu for stock selection -->
+<select id="stock" name="stock" required>
+  <option value="">Select Stock</option>
+  <option value="ITC">ITC</option>
+  <option value="HDFC Bank">HDFC Bank</option>
+  <option value="Infosys">Infosys</option>
+  <option value="Mazagon Dock Shipbuilders">Mazagon Dock Shipbuilders</option>
+  <option value="Bharti Airtel">Bharti Airtel</option>
+  <option value="Zomato">Zomato</option>
+  <option value="Waaree Energies">Waaree Energies</option>
+  <option value="Shyam Metallics">Shyam Metallics</option>
+  <option value="Ola Electric Mobility">Ola Electric Mobility</option>
+  <option value="Mankind Pharma">Mankind Pharma</option>
+  <option value="EID Parry">EID Parry</option>
+  <option value="DLF">DLF</option>
+  <option value="Lemontree Hotels">Lemontree Hotels</option>
+  <option value="Amara Raja">Amara Raja</option>
+  <option value="Indegene">Indegene</option>
+  <option value="Nippon Gold ETF">Nippon Gold ETF</option>
+  <option value="Brookfield India Real Estate Trust (BIRET)">Brookfield India Real Estate Trust (BIRET)</option>
+  <option value="Crude Oil">Crude Oil</option>
+</select>
+
           
           <label for="quantity">Quantity:</label>
           <input type="number" id="quantity" name="quantity" required>
           
           <label for="price">Price:</label>
-          <input type="number" step="0.01" id="price" name="price" required>
+          <!-- Readonly price field auto-updated based on selected stock -->
+          <input type="number" step="0.01" id="price" name="price" readonly required>
           
           <button type="submit" id="submitButton">Submit Trade Request</button>
           <span id="spinner" class="spinner" style="display:none;"></span>
@@ -279,6 +302,31 @@
   </div>
   
   <script>
+    // When the stock selection changes, update the price field automatically.
+    document.getElementById("stock").addEventListener("change", function(){
+      var selectedStock = this.value;
+      if(selectedStock !== ""){
+        fetchStockPriceForSymbol(selectedStock);
+      } else {
+        document.getElementById("price").value = "";
+      }
+    });
+    
+    function fetchStockPriceForSymbol(symbol){
+      const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getStocks';
+      fetch(scriptURL)
+        .then(response => response.json())
+        .then(data => {
+          const stockObj = data.find(s => s.symbol === symbol);
+          if(stockObj){
+            document.getElementById("price").value = stockObj.price.toFixed(2);
+          } else {
+            document.getElementById("price").value = "";
+          }
+        })
+        .catch(error => console.error("Error fetching stock price:", error));
+    }
+    
     // Switch tabs and update sidebar active state
     function showTab(tabId) {
       document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
@@ -305,7 +353,6 @@
     // Fetch portfolio data for the logged-in participant
     function fetchPortfolio() {
       const uid = document.getElementById('buyerUID').value;
-      // Replace with your deployed script URL and action=getPortfolio
       const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=getPortfolio&uid=' + uid;
       
       fetch(scriptURL)
@@ -365,7 +412,6 @@
       submitButton.disabled = true;
       
       const formData = new URLSearchParams(new FormData(form));
-      // Replace with your deployed script URL with action=submitTrade
       const scriptURL = 'https://script.google.com/macros/s/AKfycby6jPKHqTYS2tHkBh2UAz9hefTL60uD4ZsE9iI0iTEofRNgt7iz-_g2GFYapi69oow8Yg/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
