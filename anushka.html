@@ -103,28 +103,10 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    /* Form Styles */
+    /* FORM STYLES */
     form label { display: block; margin: 10px 0 5px; }
     form input, form select { padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 3px; }
     form button { margin-top: 15px; padding: 10px 15px; border: none; background-color: #27ae60; color: #fff; border-radius: 3px; cursor: pointer; }
-    
-    /* Trade Role Switch */
-    .trade-role-switch {
-      margin-bottom: 15px;
-    }
-    .trade-role-switch button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-      margin-right: 10px;
-      background-color: #ccc;
-      color: #333;
-    }
-    .trade-role-switch button.active {
-      background-color: #27ae60;
-      color: #fff;
-    }
     
     /* BUTTON STYLES */
     .btn {
@@ -216,6 +198,7 @@
   <div class="sidebar">
     <h2>AWIFS<br>Mock Stock</h2>
     <ul>
+      <!-- Updated first sidebar item to load the merged Portfolio & Trades tab -->
       <li class="active" onclick="showTab('portfolioTab')">Portfolio & Trades</li>
       <li onclick="showTab('stocksTab')">Stocks</li>
       <li onclick="showTab('newsTab')">News Flash</li>
@@ -240,117 +223,62 @@
         </div>
         <!-- Trades Section (Right Side) -->
         <div class="trades-container">
-          <!-- Trade Role Switch -->
-          <div class="trade-role-switch">
-            <button id="buyTab" class="active" onclick="switchTradeRole('buy')">Buy</button>
-            <button id="sellTab" onclick="switchTradeRole('sell')">Sell</button>
+          <div class="card">
+            <h2>Submit a Trade Request</h2>
+            <form id="tradeForm">
+              <!-- Hidden Buyer Info -->
+              <input type="hidden" id="buyerUID" name="buyerUID" value="A14">
+              <input type="hidden" id="buyerName" name="buyerName" value="Shreenand">
+              <p><strong>Logged in as:</strong> A14 - Shreenand</p>
+              
+              <label for="sellerUID">Seller UID:</label>
+              <input type="text" id="sellerUID" name="sellerUID" required>
+  
+              <label for="stock">Stock:</label>
+  <!-- Dropdown menu for stock selection -->
+  <select id="stock" name="stock" required>
+    <option value="">Select Stock</option>
+    <option value="ITC">ITC</option>
+    <option value="HDFC Bank">HDFC Bank</option>
+    <option value="Infosys">Infosys</option>
+    <option value="Mazagon Dock Shipbuilders">Mazagon Dock Shipbuilders</option>
+    <option value="Bharti Airtel">Bharti Airtel</option>
+    <option value="Zomato">Zomato</option>
+    <option value="Waaree Energies">Waaree Energies</option>
+    <option value="Shyam Metallics">Shyam Metallics</option>
+    <option value="Ola Electric Mobility">Ola Electric Mobility</option>
+    <option value="Mankind Pharma">Mankind Pharma</option>
+    <option value="EID Parry">EID Parry</option>
+    <option value="DLF">DLF</option>
+    <option value="Lemontree Hotels">Lemontree Hotels</option>
+    <option value="Amara Raja">Amara Raja</option>
+    <option value="Indegene">Indegene</option>
+    <option value="Nippon Gold ETF">Nippon Gold ETF</option>
+    <option value="Brookfield India Real Estate Trust (BIRET)">Brookfield India Real Estate Trust (BIRET)</option>
+    <option value="Crude Oil">Crude Oil</option>
+  </select>
+  
+              <label for="quantity">Quantity:</label>
+              <input type="number" id="quantity" name="quantity" required>
+              
+              <label for="price">Price:</label>
+              <!-- Readonly price field auto-updated based on selected stock -->
+              <input type="number" step="0.01" id="price" name="price" readonly required>
+              
+              <label for="totalSize">Total Buying Size:</label>
+              <input type="number" step="0.01" id="totalSize" name="totalSize" readonly required>
+              
+              <button type="submit" id="submitButton">Submit Trade Request</button>
+              <span id="spinner" class="spinner" style="display:none;"></span>
+            </form>
+            <p id="statusMessage"></p>
           </div>
-          <!-- Buy Form Container -->
-          <div id="buyFormContainer">
-            <div class="card">
-              <h2>Submit a Buy Record</h2>
-              <form id="buyForm">
-                <!-- Logged-in participant as Buyer -->
-                <input type="hidden" id="buyerUID" name="buyerUID" value="A14">
-                <input type="hidden" id="buyerName" name="buyerName" value="Anushka">
-                <p><strong>Logged in as (Buyer):</strong> A14 - Anushka</p>
-                
-                <label for="sellUID">Seller UID:</label>
-                <input type="text" id="sellUID" name="sellerUID" required>
-    
-                <label for="stock">Stock:</label>
-                <select id="stock" name="stock" required>
-                  <option value="">Select Stock</option>
-                  <option value="ITC">ITC</option>
-                  <option value="HDFC Bank">HDFC Bank</option>
-                  <option value="Infosys">Infosys</option>
-                  <option value="Mazagon Dock Shipbuilders">Mazagon Dock Shipbuilders</option>
-                  <option value="Bharti Airtel">Bharti Airtel</option>
-                  <option value="Zomato">Zomato</option>
-                  <option value="Waaree Energies">Waaree Energies</option>
-                  <option value="Shyam Metallics">Shyam Metallics</option>
-                  <option value="Ola Electric Mobility">Ola Electric Mobility</option>
-                  <option value="Mankind Pharma">Mankind Pharma</option>
-                  <option value="EID Parry">EID Parry</option>
-                  <option value="DLF">DLF</option>
-                  <option value="Lemontree Hotels">Lemontree Hotels</option>
-                  <option value="Amara Raja">Amara Raja</option>
-                  <option value="Indegene">Indegene</option>
-                  <option value="Nippon Gold ETF">Nippon Gold ETF</option>
-                  <option value="Brookfield India Real Estate Trust (BIRET)">Brookfield India Real Estate Trust (BIRET)</option>
-                  <option value="Crude Oil">Crude Oil</option>
-                </select>
-    
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" required>
-    
-                <label for="price">Price:</label>
-                <input type="number" step="0.01" id="price" name="price" readonly required>
-    
-                <label for="totalSize">Total Buying Size:</label>
-                <input type="number" step="0.01" id="totalSize" name="totalSize" readonly required>
-    
-                <button type="submit" id="submitBuyButton">Submit Buy Record</button>
-                <span id="spinner" class="spinner" style="display:none;"></span>
-              </form>
-              <p id="buyStatusMessage"></p>
+          <div class="card">
+            <h2>Incoming Trade Requests</h2>
+            <div id="incomingRequests">
+              <p>Loading incoming requests...</p>
             </div>
           </div>
-          <!-- Sell Form Container -->
-          <div id="sellFormContainer" style="display:none;">
-            <div class="card">
-              <h2>Submit a Sell Record</h2>
-              <form id="sellForm">
-                <!-- Logged-in participant as Seller -->
-                <input type="hidden" id="sellerUID" name="sellerUID" value="A14">
-                <input type="hidden" id="sellerName" name="sellerName" value="Anushka">
-                <p><strong>Logged in as (Seller):</strong> A14 - Anushka</p>
-    
-                <label for="buyUID">Buyer UID:</label>
-                <input type="text" id="buyUID" name="buyerUID" required>
-    
-                <label for="buyName">Buyer Name:</label>
-                <input type="text" id="buyName" name="buyerName" required>
-    
-                <label for="stock2">Stock:</label>
-                <select id="stock2" name="stock" required>
-                  <option value="">Select Stock</option>
-                  <option value="ITC">ITC</option>
-                  <option value="HDFC Bank">HDFC Bank</option>
-                  <option value="Infosys">Infosys</option>
-                  <option value="Mazagon Dock Shipbuilders">Mazagon Dock Shipbuilders</option>
-                  <option value="Bharti Airtel">Bharti Airtel</option>
-                  <option value="Zomato">Zomato</option>
-                  <option value="Waaree Energies">Waaree Energies</option>
-                  <option value="Shyam Metallics">Shyam Metallics</option>
-                  <option value="Ola Electric Mobility">Ola Electric Mobility</option>
-                  <option value="Mankind Pharma">Mankind Pharma</option>
-                  <option value="EID Parry">EID Parry</option>
-                  <option value="DLF">DLF</option>
-                  <option value="Lemontree Hotels">Lemontree Hotels</option>
-                  <option value="Amara Raja">Amara Raja</option>
-                  <option value="Indegene">Indegene</option>
-                  <option value="Nippon Gold ETF">Nippon Gold ETF</option>
-                  <option value="Brookfield India Real Estate Trust (BIRET)">Brookfield India Real Estate Trust (BIRET)</option>
-                  <option value="Crude Oil">Crude Oil</option>
-                </select>
-    
-                <label for="quantity2">Quantity:</label>
-                <input type="number" id="quantity2" name="quantity" required>
-    
-                <label for="price2">Price:</label>
-                <input type="number" step="0.01" id="price2" name="price" readonly required>
-    
-                <label for="totalSize2">Total Buying Size:</label>
-                <input type="number" step="0.01" id="totalSize2" name="totalSize" readonly required>
-    
-                <button type="submit" id="submitSellButton">Submit Sell Record</button>
-                <span id="spinner2" class="spinner" style="display:none;"></span>
-              </form>
-              <p id="sellStatusMessage"></p>
-            </div>
-          </div>
-          <!-- Trade History Card (remains the same) -->
           <div class="card">
             <h2>Your Trade History</h2>
             <div id="tradeHistory">
@@ -393,80 +321,51 @@
   </div>
   
   <script>
-    // Helper: Update Total Buying Size for a given set of fields
-    function updateTotalSize(quantityFieldId, priceFieldId, totalFieldId) {
-      var quantity = parseFloat(document.getElementById(quantityFieldId).value) || 0;
-      var price = parseFloat(document.getElementById(priceFieldId).value) || 0;
-      var total = quantity * price;
-      document.getElementById(totalFieldId).value = total.toFixed(2);
-    }
-    
-    // For Buy Form: update when quantity or stock changes
-    document.getElementById("quantity").addEventListener("input", function(){
-      updateTotalSize("quantity", "price", "totalSize");
-    });
+    // When the stock selection changes, update the price field automatically.
     document.getElementById("stock").addEventListener("change", function(){
       var selectedStock = this.value;
       if(selectedStock !== ""){
-        fetchStockPriceForSymbol(selectedStock, "price", "totalSize", "quantity");
+        fetchStockPriceForSymbol(selectedStock);
       } else {
         document.getElementById("price").value = "";
-        updateTotalSize("quantity", "price", "totalSize");
+        updateTotalSize();
       }
     });
     
-    // For Sell Form: update when quantity or stock changes
-    document.getElementById("quantity2").addEventListener("input", function(){
-      updateTotalSize("quantity2", "price2", "totalSize2");
-    });
-    document.getElementById("stock2").addEventListener("change", function(){
-      var selectedStock = this.value;
-      if(selectedStock !== ""){
-        fetchStockPriceForSymbol(selectedStock, "price2", "totalSize2", "quantity2");
-      } else {
-        document.getElementById("price2").value = "";
-        updateTotalSize("quantity2", "price2", "totalSize2");
-      }
-    });
+    // Update Total Buying Size based on quantity and price
+    document.getElementById("quantity").addEventListener("input", updateTotalSize);
     
-    // Function to fetch stock price and update total size
-    function fetchStockPriceForSymbol(symbol, priceFieldId, totalFieldId, quantityFieldId){
+    function updateTotalSize(){
+      var quantity = parseFloat(document.getElementById("quantity").value) || 0;
+      var price = parseFloat(document.getElementById("price").value) || 0;
+      var total = quantity * price;
+      document.getElementById("totalSize").value = total.toFixed(2);
+    }
+    
+    function fetchStockPriceForSymbol(symbol){
       const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
           const stockObj = data.find(s => s.symbol === symbol);
           if(stockObj){
-            document.getElementById(priceFieldId).value = stockObj.price.toFixed(2);
+            document.getElementById("price").value = stockObj.price.toFixed(2);
           } else {
-            document.getElementById(priceFieldId).value = "";
+            document.getElementById("price").value = "";
           }
-          updateTotalSize(quantityFieldId, priceFieldId, totalFieldId);
+          updateTotalSize();
         })
         .catch(error => console.error("Error fetching stock price:", error));
-    }
-    
-    // Trade Role Switch function
-    function switchTradeRole(role) {
-      if(role === 'buy'){
-        document.getElementById("buyTab").classList.add("active");
-        document.getElementById("sellTab").classList.remove("active");
-        document.getElementById("buyFormContainer").style.display = "block";
-        document.getElementById("sellFormContainer").style.display = "none";
-      } else if(role === 'sell'){
-        document.getElementById("sellTab").classList.add("active");
-        document.getElementById("buyTab").classList.remove("active");
-        document.getElementById("sellFormContainer").style.display = "block";
-        document.getElementById("buyFormContainer").style.display = "none";
-      }
     }
     
     // Switch tabs and update sidebar active state
     function showTab(tabId) {
       document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
+      // Updated for merged Portfolio & Trades tab
       if(tabId === 'portfolioTab'){
         document.querySelector('.sidebar ul li:nth-child(1)').classList.add('active');
         fetchPortfolio();
+        fetchIncomingRequests();
         fetchTradeHistory();
       } else if(tabId === 'stocksTab'){
         document.querySelector('.sidebar ul li:nth-child(2)').classList.add('active');
@@ -532,18 +431,18 @@
         });
     }
     
-    // Buy Form submission logic
-    const buyForm = document.getElementById('buyForm');
-    const buyStatusMessage = document.getElementById('buyStatusMessage');
-    const submitBuyButton = document.getElementById('submitBuyButton');
+    // Trade submission logic with spinner indicator
+    const form = document.getElementById('tradeForm');
+    const statusMessage = document.getElementById('statusMessage');
+    const submitButton = document.getElementById('submitButton');
     const spinner = document.getElementById('spinner');
     
-    buyForm.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
       spinner.style.display = 'inline-block';
-      submitBuyButton.disabled = true;
+      submitButton.disabled = true;
       
-      const formData = new URLSearchParams(new FormData(buyForm));
+      const formData = new URLSearchParams(new FormData(form));
       const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
@@ -552,69 +451,94 @@
         body: formData.toString()
       })
       .then(() => {
-        buyStatusMessage.textContent = 'Buy record submitted successfully!';
-        buyForm.reset();
-        submitBuyButton.disabled = false;
+        statusMessage.textContent = 'Trade request submitted successfully!';
+        form.reset();
+        submitButton.disabled = false;
         spinner.style.display = 'none';
-        updateTotalSize("quantity", "price", "totalSize");
+        updateTotalSize();
+        // Optionally refresh trade history and incoming requests after submission
+        fetchIncomingRequests();
         fetchTradeHistory();
       })
       .catch(error => {
         console.error('Error!', error.message);
-        buyStatusMessage.textContent = 'Submission failed. Please try again.';
-        submitBuyButton.disabled = false;
+        statusMessage.textContent = 'Submission failed. Please try again.';
+        submitButton.disabled = false;
         spinner.style.display = 'none';
       });
     });
     
-    // Sell Form submission logic
-    const sellForm = document.getElementById('sellForm');
-    const sellStatusMessage = document.getElementById('sellStatusMessage');
-    const submitSellButton = document.getElementById('submitSellButton');
-    const spinner2 = document.getElementById('spinner2');
-    
-    sellForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      spinner2.style.display = 'inline-block';
-      submitSellButton.disabled = true;
+    // Fetch active incoming requests for seller A14
+    function fetchIncomingRequests() {
+      const sellerUID = "A14";
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
       
-      // For sell, swap the roles: the logged-in participant is the seller.
-      // So we construct a new formData where buyerUID and buyerName come from the form inputs.
-      const formDataObj = {
-        buyerUID: document.getElementById('buyUID').value,
-        buyerName: document.getElementById('buyName').value,
-        sellerUID: document.getElementById('sellerUID').value,
-        stock: document.getElementById('stock2').value,
-        quantity: document.getElementById('quantity2').value,
-        price: document.getElementById('price2').value
-      };
-      const formData = new URLSearchParams(formDataObj);
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=submitTrade';
+      fetch(scriptURL)
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById("incomingRequests");
+          if (data.length === 0) {
+            container.innerHTML = "<p>No active incoming requests.</p>";
+          } else {
+            let html = "<ul>";
+            data.forEach(req => {
+              const totalSize = (req.quantity * req.price).toFixed(2);
+              html += `<li style="margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <p><strong>Trade ID:</strong> ${req.tradeId}</p>
+                        <p>From: ${req.buyerName} (${req.buyerUID})</p>
+                        <p>Stock: ${req.stock} – ${req.quantity} shares @ $${req.price} on ${new Date(req.timestamp).toLocaleString()}</p>
+                        <p><strong>Total Buying Size:</strong> $${totalSize}</p>
+                        <button class="btn btn-accept" onclick="processTrade('${req.tradeId}', 'acceptTrade', this)">Accept</button>
+                        <button class="btn btn-reject" onclick="processTrade('${req.tradeId}', 'rejectTrade', this)">Reject</button>
+                        <span id="spinner_${req.tradeId}" class="spinner" style="display:none;"></span>
+                      </li>`;
+            });
+            html += "</ul>";
+            container.innerHTML = html;
+          }
+        })
+        .catch(error => console.error("Error fetching incoming requests:", error));
+    }
+    
+    // Process accept/reject action for a trade with spinner and custom message
+    function processTrade(tradeId, action, btnElem) {
+      if (!confirm(`Are you sure you want to ${action === 'acceptTrade' ? 'accept' : 'reject'} this trade?`)) return;
+      // Show spinner next to the buttons for this trade item
+      const spinnerElem = document.getElementById("spinner_" + tradeId);
+      if (spinnerElem) spinnerElem.style.display = 'inline-block';
+      
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec';
+      const params = new URLSearchParams();
+      params.append('action', action);
+      params.append('tradeId', tradeId);
+      
       fetch(scriptURL, {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: formData.toString()
+        body: params.toString()
       })
-      .then(() => {
-        sellStatusMessage.textContent = 'Sell record submitted successfully!';
-        sellForm.reset();
-        submitSellButton.disabled = false;
-        spinner2.style.display = 'none';
-        updateTotalSize("quantity2", "price2", "totalSize2");
-        fetchTradeHistory();
+      .then(response => response.text())
+      .then(result => {
+         if (spinnerElem) spinnerElem.style.display = 'none';
+         if (action === 'acceptTrade') {
+            alert("Trade accepted successfully. The buyer has been notified of the successful trade.");
+         } else if (action === 'rejectTrade') {
+            alert("Trade rejected. An error message has been sent to the buyer.");
+         }
+         fetchIncomingRequests();
+         fetchTradeHistory();
       })
       .catch(error => {
-        console.error('Error!', error.message);
-        sellStatusMessage.textContent = 'Submission failed. Please try again.';
-        submitSellButton.disabled = false;
-        spinner2.style.display = 'none';
+         if (spinnerElem) spinnerElem.style.display = 'none';
+         console.error('Error processing trade:', error);
+         alert("An error occurred processing the trade. Please try again.");
       });
-    });
+    }
     
-    // Fetch trade history for the logged-in buyer (Note: only records where logged-in user is buyer will appear)
+    // Fetch trade history for the logged-in buyer
     function fetchTradeHistory() {
-      const uid = document.getElementById('buyerUID').value;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getTradeHistory&buyerUID=' + uid;
+      const buyerUID = document.getElementById('buyerUID').value;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getTradeHistory&buyerUID=' + buyerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
