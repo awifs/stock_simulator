@@ -231,32 +231,32 @@
               <input type="hidden" id="buyerName" name="buyerName" value="Alphas">
               <p><strong>Logged in as:</strong> T12 - Alphas</p>
               
-              <label for="sellerUID">Seller UID:</label>
+              <label for="sellerUID">Buy from:</label>
               <input type="text" id="sellerUID" name="sellerUID" required>
   
               <label for="stock">Stock:</label>
-  <!-- Dropdown menu for stock selection -->
-  <select id="stock" name="stock" required>
-    <option value="">Select Stock</option>
-    <option value="ITC">ITC</option>
-    <option value="HDFC Bank">HDFC Bank</option>
-    <option value="Infosys">Infosys</option>
-    <option value="Mazagon Dock Shipbuilders">Mazagon Dock Shipbuilders</option>
-    <option value="Bharti Airtel">Bharti Airtel</option>
-    <option value="Zomato">Zomato</option>
-    <option value="Waaree Energies">Waaree Energies</option>
-    <option value="Shyam Metallics">Shyam Metallics</option>
-    <option value="Ola Electric Mobility">Ola Electric Mobility</option>
-    <option value="Mankind Pharma">Mankind Pharma</option>
-    <option value="EID Parry">EID Parry</option>
-    <option value="DLF">DLF</option>
-    <option value="Lemontree Hotels">Lemontree Hotels</option>
-    <option value="Amara Raja">Amara Raja</option>
-    <option value="Indegene">Indegene</option>
-    <option value="Nippon Gold ETF">Nippon Gold ETF</option>
-    <option value="Brookfield India Real Estate Trust (BIRET)">Brookfield India Real Estate Trust (BIRET)</option>
-    <option value="Crude Oil">Crude Oil</option>
-  </select>
+              <!-- Dropdown menu for stock selection -->
+              <select id="stock" name="stock" required>
+                <option value="">Select Stock</option>
+                <option value="ITC">ITC</option>
+                <option value="HDFC Bank">HDFC Bank</option>
+                <option value="Infosys">Infosys</option>
+                <option value="Mazagon Dock Shipbuilders">Mazagon Dock Shipbuilders</option>
+                <option value="Bharti Airtel">Bharti Airtel</option>
+                <option value="Zomato">Zomato</option>
+                <option value="Waaree Energies">Waaree Energies</option>
+                <option value="Shyam Metallics">Shyam Metallics</option>
+                <option value="Ola Electric Mobility">Ola Electric Mobility</option>
+                <option value="Mankind Pharma">Mankind Pharma</option>
+                <option value="EID Parry">EID Parry</option>
+                <option value="DLF">DLF</option>
+                <option value="Lemontree Hotels">Lemontree Hotels</option>
+                <option value="Amara Raja">Amara Raja</option>
+                <option value="Indegene">Indegene</option>
+                <option value="Nippon Gold ETF">Nippon Gold ETF</option>
+                <option value="Brookfield India Real Estate Trust (BIRET)">Brookfield India Real Estate Trust (BIRET)</option>
+                <option value="Crude Oil">Crude Oil</option>
+              </select>
   
               <label for="quantity">Quantity:</label>
               <input type="number" id="quantity" name="quantity" required>
@@ -343,7 +343,7 @@
     }
     
     function fetchStockPriceForSymbol(symbol){
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getStocks';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -384,7 +384,7 @@
     // Fetch portfolio data for the logged-in participant
     function fetchPortfolio() {
       const uid = document.getElementById('buyerUID').value;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getPortfolio&uid=' + uid;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getPortfolio&uid=' + uid;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -394,7 +394,7 @@
           const stocks = data.stocks;
           
           let html = `<h3>${participant.name} (${participant.uid})</h3>
-                      <p><strong>Portfolio Value:</strong> $${participant.portfolioValue.toFixed(2)}</p>
+                      <p><strong>Portfolio Value:</strong> ₹${participant.portfolioValue.toFixed(2)}</p>
                       <h4>Your Holdings</h4>`;
           
           if(Object.keys(participant.holdings).length === 0){
@@ -415,8 +415,8 @@
               html += `<tr>
                         <td>${stock}</td>
                         <td>${shares}</td>
-                        <td>$${price.toFixed(2)}</td>
-                        <td>$${value.toFixed(2)}</td>
+                        <td>₹${price.toFixed(2)}</td>
+                        <td>₹${value.toFixed(2)}</td>
                       </tr>`;
             }
             html += `</table>`;
@@ -442,7 +442,7 @@
       submitButton.disabled = true;
       
       const formData = new URLSearchParams(new FormData(form));
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=submitTrade';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -470,7 +470,7 @@
     // Fetch active incoming requests for seller T12
     function fetchIncomingRequests() {
       const sellerUID = "T12";
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -485,8 +485,8 @@
               html += `<li style="margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
                         <p><strong>Trade ID:</strong> ${req.tradeId}</p>
                         <p>From: ${req.buyerName} (${req.buyerUID})</p>
-                        <p>Stock: ${req.stock} – ${req.quantity} shares @ $${req.price} on ${new Date(req.timestamp).toLocaleString()}</p>
-                        <p><strong>Total Buying Size:</strong> $${totalSize}</p>
+                        <p>Stock: ${req.stock} – ${req.quantity} shares @ ₹${req.price} on ${new Date(req.timestamp).toLocaleString()}</p>
+                        <p><strong>Total Buying Size:</strong> ₹${totalSize}</p>
                         <button class="btn btn-accept" onclick="processTrade('${req.tradeId}', 'acceptTrade', this)">Accept</button>
                         <button class="btn btn-reject" onclick="processTrade('${req.tradeId}', 'rejectTrade', this)">Reject</button>
                         <span id="spinner_${req.tradeId}" class="spinner" style="display:none;"></span>
@@ -506,7 +506,7 @@
       const spinnerElem = document.getElementById("spinner_" + tradeId);
       if (spinnerElem) spinnerElem.style.display = 'inline-block';
       
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
@@ -520,7 +520,12 @@
       .then(result => {
          if (spinnerElem) spinnerElem.style.display = 'none';
          if (action === 'acceptTrade') {
-            alert("Trade accepted successfully. The buyer has been notified of the successful trade.");
+           // If the response includes the error message about seller shares, display that; otherwise show success message.
+           if(result.includes("Seller does not have enough shares")){
+             alert(result);
+           } else {
+             alert("Trade accepted successfully. The buyer has been notified of the successful trade.");
+           }
          } else if (action === 'rejectTrade') {
             alert("Trade rejected. An error message has been sent to the buyer.");
          }
@@ -537,7 +542,7 @@
     // Fetch trade history for the logged-in buyer
     function fetchTradeHistory() {
       const buyerUID = document.getElementById('buyerUID').value;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getTradeHistory&buyerUID=' + buyerUID;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getTradeHistory&buyerUID=' + buyerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -552,8 +557,8 @@
               html += `<li style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
                         <p><strong>Trade ID:</strong> ${trade.tradeId}</p>
                         <p>Seller: ${trade.sellerUID}</p>
-                        <p>Stock: ${trade.stock} – ${trade.quantity} shares @ $${trade.price} (${trade.status})</p>
-                        <p><strong>Total Buying Size:</strong> $${totalSize}</p>
+                        <p>Stock: ${trade.stock} – ${trade.quantity} shares @ ₹${trade.price} (${trade.status})</p>
+                        <p><strong>Total Buying Size:</strong> ₹${totalSize}</p>
                       </li>`;
             });
             html += "</ul>";
@@ -568,7 +573,7 @@
     
     // Fetch stocks data for the Stocks tab
     function fetchStocks() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getStocks';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -584,7 +589,7 @@
             data.forEach(stock => {
               html += `<tr>
                         <td>${stock.symbol}</td>
-                        <td>$${stock.price.toFixed(2)}</td>
+                        <td>₹${stock.price.toFixed(2)}</td>
                       </tr>`;
             });
             html += `</table>`;
@@ -599,7 +604,7 @@
     
     // Fetch news flash data for the News Flash tab
     function fetchNews() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getNews';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getNews';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -624,7 +629,7 @@
     
     // Fetch leaderboard data for the Leaderboard tab
     function fetchLeaderboard() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvyzpjbrOJY-UAdW6I9NHO5uh6CjQx3rgSh_oPe84dcV-NmE0sOGWRcI69ZGwr-zv20g/exec?action=getLeaderboard';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getLeaderboard';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -644,7 +649,7 @@
                         <td>${index + 1}</td>
                         <td>${participant.uid}</td>
                         <td>${participant.name}</td>
-                        <td>$${participant.portfolioValue.toFixed(2)}</td>
+                        <td>₹${participant.portfolioValue.toFixed(2)}</td>
                       </tr>`;
             });
             html += `</table>`;
