@@ -343,7 +343,7 @@
     }
     
     function fetchStockPriceForSymbol(symbol){
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getStocks';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -384,7 +384,7 @@
     // Fetch portfolio data for the logged-in participant
     function fetchPortfolio() {
       const uid = document.getElementById('buyerUID').value;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getPortfolio&uid=' + uid;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec?action=getPortfolio&uid=' + uid;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -442,7 +442,7 @@
       submitButton.disabled = true;
       
       const formData = new URLSearchParams(new FormData(form));
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=submitTrade';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec?action=submitTrade';
       fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -470,7 +470,7 @@
     // Fetch active incoming requests for seller A12
     function fetchIncomingRequests() {
       const sellerUID = "A12";
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -506,7 +506,7 @@
       const spinnerElem = document.getElementById("spinner_" + tradeId);
       if (spinnerElem) spinnerElem.style.display = 'inline-block';
       
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec';
       const params = new URLSearchParams();
       params.append('action', action);
       params.append('tradeId', tradeId);
@@ -542,7 +542,7 @@
     // Fetch trade history for the logged-in buyer
     function fetchTradeHistory() {
       const buyerUID = document.getElementById('buyerUID').value;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getTradeHistory&buyerUID=' + buyerUID;
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec?action=getTradeHistory&buyerUID=' + buyerUID;
       
       fetch(scriptURL)
         .then(response => response.json())
@@ -573,7 +573,7 @@
     
     // Fetch stocks data for the Stocks tab
     function fetchStocks() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getStocks';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec?action=getStocks';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -604,7 +604,7 @@
     
     // Fetch news flash data for the News Flash tab
     function fetchNews() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getNews';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec?action=getNews';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
@@ -629,7 +629,7 @@
     
     // Fetch leaderboard data for the Leaderboard tab
     function fetchLeaderboard() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getLeaderboard';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzzNLDlO2ZApVl2p25cRtLTl_zZAYQur-o5_uFkWbJH_TQ99CjOBW7_4sqx-ZziZHC2xg/exec?action=getLeaderboard';
       fetch(scriptURL)
         .then(response => response.json())
         .then(data => {
