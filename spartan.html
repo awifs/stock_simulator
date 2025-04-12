@@ -227,9 +227,9 @@
             <h2>Submit a Trade Request</h2>
             <form id="tradeForm">
               <!-- Hidden Buyer Info -->
-              <input type="hidden" id="buyerUID" name="buyerUID" value="T0">
+              <input type="hidden" id="buyerUID" name="buyerUID" value="T15">
               <input type="hidden" id="buyerName" name="buyerName" value="Spartan">
-              <p><strong>Logged in as:</strong> T0 - Spartan</p>
+              <p><strong>Logged in as:</strong> T15 - Spartan</p>
               
               <label for="sellerUID">Buy from:</label>
               <input type="text" id="sellerUID" name="sellerUID" required>
@@ -467,9 +467,9 @@
       });
     });
     
-    // Fetch active incoming requests for seller T0
+    // Fetch active incoming requests for seller T15
     function fetchIncomingRequests() {
-      const sellerUID = "T0";
+      const sellerUID = "T15";
       const scriptURL = 'https://script.google.com/macros/s/AKfycbxgkYW8bOy6pjz27iIdN7KGRWhjl0ZBVrhFpvdIavEtrt157jzWzuaMfA44IqbjsLzR1w/exec?action=getIncomingRequests&sellerUID=' + sellerUID;
       
       fetch(scriptURL)
